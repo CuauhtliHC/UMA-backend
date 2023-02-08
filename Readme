@@ -1,0 +1,6 @@
+
+
+
+docker:
+1.- docker build -t my-node-app .
+2.- docker run -p 3000:3000 my-node-app
