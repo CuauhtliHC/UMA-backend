@@ -9,6 +9,13 @@ Equipo de Desarrollo Logismatica:
 ° Juan Agustin Alejandro;
 ° Francisco Leyes Campoy
 
+Instalacion de proyecto
+
+1.- Realizar un git clone
+2.- Duplica el .env.template
+3.- Renombra la copia a .env y completa la informacion del mismo
+
+
 Para inicializar el proyecto correr los siguientes comandos:
 
 1.- npm Install || npm i;
