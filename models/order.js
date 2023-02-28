@@ -8,6 +8,10 @@ Order.init(
       type: S.STRING,
       allowNull: false,
     },
+    inProgres: {
+      type: S.STRING,
+      defaultValue: 'pending',
+    },
     deleted: {
       type: S.BOOLEAN,
       defaultValue: false,

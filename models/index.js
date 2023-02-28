@@ -1,3 +1,4 @@
+const InProgressOrders = require('./inProgressOrders');
 const Log = require('./log');
 const Order = require('./order');
 const Packege = require('./packege');
@@ -6,6 +7,15 @@ const User = require('./user');
 
 Role.hasMany(User, { as: 'Users', foreignKey: 'roleId' });
 User.belongsTo(Role, { as: 'Role', foreignKey: 'roleId' });
+
+InProgressOrders.hasMany(Order, {
+  as: 'Orders',
+  foreignKey: 'inProgressOrdersId',
+});
+Order.belongsTo(InProgressOrders, {
+  as: 'InProgressOrders',
+  foreignKey: 'inProgressOrdersId',
+});
 
 User.hasMany(Log, { as: 'Logs', foreignKey: 'userId' });
 Log.belongsTo(User, { as: 'Users', foreignKey: 'userId' });
@@ -22,4 +32,5 @@ module.exports = {
   Role,
   Log,
   Packege,
+  InProgressOrders,
 };
