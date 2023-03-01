@@ -6,6 +6,7 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.usuariosPath = '/api/users';
     this.conectarDB(); // conecta a la base de datos
 
     this.middLewares(); // controla antes de la llegada al servidor
@@ -41,11 +42,3 @@ class Server {
 }
 
 module.exports = Server;
-
-// app.use((err, req, res) => {
-//   console.log('ERROR');
-//   console.log(err);
-//   res.status(500).send(err.message);
-// });
-
-// app.listen(3001, () => console.log('Servidor escuchando en el puerto 3001'));
