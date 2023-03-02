@@ -7,7 +7,12 @@ class User extends S.Model {
     const salt = bcryptjs.genSaltSync();
     return bcryptjs.hashSync(password, salt);
   }
+
+  static validatePassword(password) {
+    return this.encriptPass(password).then((newPassword) => newPassword === this.password);
+  }
 }
+
 User.init(
   {
     name: {
@@ -39,5 +44,9 @@ User.init(
     modelName: 'user',
   },
 );
+
+User.beforeCreate((user) => {
+  user.encriptPass(user.password);
+});
 
 module.exports = User;
