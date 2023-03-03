@@ -7,6 +7,6 @@ const generateToken = (payload) => {
   return token;
 };
 
-const validateToken = () => {};
+// const validateToken = () => {};
 
-module.exports = { generateToken, validateToken };
+module.exports = { generateToken };

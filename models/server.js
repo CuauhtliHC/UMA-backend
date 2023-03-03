@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { dbConection } = require('../database/conectBD');
 
 class Server {
@@ -30,6 +31,7 @@ class Server {
 
     // body parser
     this.app.use(express.json());
+    this.app.use(cookieParser());
   }
 
   routes() {
