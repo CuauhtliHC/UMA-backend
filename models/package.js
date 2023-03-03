@@ -2,8 +2,8 @@ const { Model } = require('sequelize');
 const S = require('sequelize');
 const sequelize = require('../database/database');
 
-class Packege extends Model {}
-Packege.init(
+class Package extends Model {}
+Package.init(
   {
     address: {
       type: S.STRING,
@@ -22,15 +22,15 @@ Packege.init(
       allowNull: false,
     },
     quantityOfPackages: {
-      type: S.INET,
-      defaultValue: 1,
+      type: S.DECIMAL,
+      allowNull: false,
     },
     deleted: {
       type: S.BOOLEAN,
       defaultValue: false,
     },
   },
-  { sequelize, modelName: 'packege' },
+  { sequelize, modelName: 'Package' },
 );
 
-module.exports = Packege;
+module.exports = Package;
