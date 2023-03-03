@@ -15,6 +15,7 @@ Instalacion de proyecto
 2.- Duplica el .env.template
 3.- Renombra la copia a .env y completa la informacion del mismo
 
+Documentacion https://documenter.getpostman.com/view/19815687/2s93CUHq9K
 
 Para inicializar el proyecto correr los siguientes comandos:
 
