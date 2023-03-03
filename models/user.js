@@ -45,8 +45,8 @@ User.init(
   },
 );
 
-User.beforeCreate((user) => {
-  user.encriptPass(user.password);
-});
+// User.beforeCreate((user) => {
+//   user.validatePassword(user.password);
+// });
 
 module.exports = User;
