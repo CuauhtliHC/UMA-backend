@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { check } = require('express-validator');
 const {
   getPackageAll,
   getPackageToday,
@@ -9,7 +8,7 @@ const {
   getPackageId,
 } = require('../controllers/packageControllers');
 const { validateBody } = require('../middlewares/validate-body');
-const { quantityGreaterThanCero } = require('../middlewares/validate-package');
+const { validationsPost, validationsId, validationsPut } = require('../middlewares/validations/packages');
 
 const route = Router();
 
@@ -17,39 +16,25 @@ route.get('/', getPackageAll);
 route.get('/today', getPackageToday);
 route.get(
   '/:id',
-  [check('id', 'the id has to be a Int').isInt(), validateBody],
+  [validationsId, validateBody],
   getPackageId,
 );
 route.post(
   '/',
   [
-    check('address', 'Address field required').not().isEmpty(),
-    check('addresses', 'addresses field required').not().isEmpty(),
-    check('weight', 'weight field required').not().isEmpty(),
-    check('weight', 'The weight field must be a Float').isFloat(),
-    check('dateOfDelivery', 'dateOfDelivery field required').not().isEmpty(),
-    check(
-      'dateOfDelivery',
-      'The field dateOfDelivery must be a datewith the format YYYY-MM-DD',
-    ).isDate({
-      format: 'YYYY-MM-DD',
-    }),
-    check('quantityOfPackages', 'quantityOfPackages field required')
-      .not()
-      .isEmpty(),
-    check('quantityOfPackages').custom(quantityGreaterThanCero),
+    validationsPost,
     validateBody,
   ],
   postPackage,
 );
 route.put(
   '/:id',
-  [check('id', 'the id has to be a Int').isInt(), validateBody],
+  [validationsPut, validateBody],
   putPackage,
 );
 route.delete(
   '/:id',
-  [check('id', 'the id has to be a Int').isInt(), validateBody],
+  [validationsId, validateBody],
   deletePackage,
 );
 
