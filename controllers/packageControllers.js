@@ -57,7 +57,7 @@ const getPackageId = async (req = request, res = response) => {
     });
   } catch (error) {
     res.status(500).json({
-      msg: 'Error - All Package',
+      msg: `Error - ${id} Package`,
       error,
     });
   }
@@ -89,7 +89,7 @@ const putPackage = async (req = request, res = response) => {
   }
   try {
     const packageId = await putPackagesFromDb(packageInfo, dato);
-    res.status(200).json({ msg: 'Package-Delete', packageId });
+    res.status(200).json({ msg: 'Package-Put', packageId });
   } catch (error) {
     res.status(500).json({
       msg: 'Error Package',
