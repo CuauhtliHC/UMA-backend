@@ -7,7 +7,7 @@ InProgressOrders.init(
   {
     status: {
       type: S.STRING,
-      defaultValue: 'pending',
+      allowNull: false,
     },
   },
   { sequelize, modelName: 'inProgressOrders' },

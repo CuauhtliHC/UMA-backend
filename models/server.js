@@ -2,6 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { dbConection } = require('../database/conectBD');
+const {
+  creationRolesRequired,
+  creationStatusOrdersRequired,
+  creationUserAdmin,
+} = require('../services/creationTablesRequired');
 
 class Server {
   constructor() {
@@ -11,14 +16,20 @@ class Server {
     this.usersPath = '/api/users';
     this.loginPath = '/api/login';
     this.conectarDB(); // conecta a la base de datos
-
     this.middLewares(); // controla antes de la llegada al servidor
 
     this.routes(); // rutas
+    this.creationTables();
   }
 
   async conectarDB() {
     await dbConection();
+  }
+
+  async creationTables() {
+    await creationRolesRequired();
+    await creationStatusOrdersRequired();
+    await creationUserAdmin();
   }
 
   // middlewares
