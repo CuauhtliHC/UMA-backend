@@ -1,4 +1,5 @@
 const { check } = require('express-validator');
+const { validate } = require('../validate');
 const {
   quantityGreaterThanCero,
   validatedDeliveryDate,
@@ -16,13 +17,13 @@ exports.validationsPost = [
   check('quantityOfPackages').custom(quantityGreaterThanCero),
   check('dateOfDelivery').custom(validatedDeliveryDate),
   check('weight').custom(validatedWeight),
+  validate,
 ];
-
-exports.validationsId = [check('id', 'the id has to be a Int').isInt()];
 
 exports.validationsPut = [
   check('quantityOfPackages').custom(quantityGreaterThanCero),
   check('id', 'the id has to be a Int').isInt(),
   check('weight').custom(validatedWeight),
   check('dateOfDelivery').custom(validatedDeliveryDate),
+  validate,
 ];

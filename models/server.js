@@ -12,9 +12,10 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    this.PackagePath = '/api/Package';
+    this.PackagePath = '/api/package';
     this.usersPath = '/api/users';
     this.loginPath = '/api/login';
+    this.ordersPath = '/api/orders';
     this.conectarDB(); // conecta a la base de datos
     this.middLewares(); // controla antes de la llegada al servidor
 
@@ -49,6 +50,7 @@ class Server {
     this.app.use(this.PackagePath, require('../routes/package'));
     this.app.use(this.usersPath, require('../routes/users'));
     this.app.use(this.loginPath, require('../routes/login'));
+    this.app.use(this.ordersPath, require('../routes/orders'));
   }
 
   listen() {
