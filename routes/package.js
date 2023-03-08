@@ -7,35 +7,21 @@ const {
   deletePackage,
   getPackageId,
 } = require('../controllers/packageControllers');
-const { validateBody } = require('../middlewares/validate-body');
-const { validationsPost, validationsId, validationsPut } = require('../middlewares/validations/packages');
+const {
+  validationsId,
+} = require('../middlewares/validations/generic_validations');
+const {
+  validationsPost,
+  validationsPut,
+} = require('../middlewares/validations/packages');
 
 const route = Router();
 
 route.get('/', getPackageAll);
 route.get('/today', getPackageToday);
-route.get(
-  '/:id',
-  [validationsId, validateBody],
-  getPackageId,
-);
-route.post(
-  '/',
-  [
-    validationsPost,
-    validateBody,
-  ],
-  postPackage,
-);
-route.put(
-  '/:id',
-  [validationsPut, validateBody],
-  putPackage,
-);
-route.delete(
-  '/:id',
-  [validationsId, validateBody],
-  deletePackage,
-);
+route.get('/:id', validationsId, getPackageId);
+route.post('/', validationsPost, postPackage);
+route.put('/:id', validationsPut, putPackage);
+route.delete('/:id', validationsId, deletePackage);
 
 module.exports = route;

@@ -3,8 +3,6 @@ const buildObject = (obj) => {
   Object.keys(obj).forEach((propiedad) => {
     if (obj[propiedad]) dato[propiedad] = obj[propiedad];
   });
-  //   for (const propiedad of Object.keys(obj)) {
-  //   }
   return dato;
 };
 

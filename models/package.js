@@ -25,12 +25,16 @@ Package.init(
       type: S.DECIMAL,
       allowNull: false,
     },
+    quantityInOrders: {
+      type: S.DECIMAL,
+      defaultValue: 0,
+    },
     deleted: {
       type: S.BOOLEAN,
       defaultValue: false,
     },
   },
-  { sequelize, modelName: 'Package' },
+  { sequelize, modelName: 'package' },
 );
 
 module.exports = Package;

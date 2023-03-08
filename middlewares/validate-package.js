@@ -1,5 +1,4 @@
 const days = require('dayjs');
-const { response } = require('express');
 
 const quantityGreaterThanCero = (quantityOfPackages) => {
   if (!quantityOfPackages) {

@@ -9,22 +9,22 @@ Role.hasMany(User, { as: 'Users', foreignKey: 'roleId' });
 User.belongsTo(Role, { as: 'Role', foreignKey: 'roleId' });
 
 InProgressOrders.hasMany(Order, {
-  as: 'Orders',
+  as: 'Order',
   foreignKey: 'inProgressOrdersId',
 });
 Order.belongsTo(InProgressOrders, {
-  as: 'InProgressOrders',
+  as: 'InProgressOrder',
   foreignKey: 'inProgressOrdersId',
 });
 
 User.hasMany(Log, { as: 'Logs', foreignKey: 'userId' });
-Log.belongsTo(User, { as: 'Users', foreignKey: 'userId' });
+Log.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 
 User.belongsToMany(Order, { through: 'UsersOrders' });
 Order.belongsToMany(User, { through: 'UsersOrders' });
 
-Package.hasMany(Order, { as: 'Orders', foreignKey: 'PackageId' });
-Order.belongsTo(Package, { as: 'Packages', foreignKey: 'PackageId' });
+Package.hasMany(Order, { as: 'Order', foreignKey: 'PackageId' });
+Order.belongsTo(Package, { as: 'Package', foreignKey: 'PackageId' });
 
 module.exports = {
   Order,
