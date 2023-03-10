@@ -14,18 +14,17 @@ const {
   validateRegister,
 } = require('../middlewares/validations/users_validation');
 const { validateAuth, validateAdmin } = require('../middlewares/auth');
+const {
+  validateUpdate,
+  validateForBanUser,
+} = require('../middlewares/validations/validate_update_user');
 
 router.get('/validate', validateAuth, validateControllers);
 router.post('/register', userRegister, validateRegister);
 router.get('/getAllUsers', validateAdmin, getAllUsers);
-router.get('/getUserById', getUserById);
-router.get('/getAllUsersBanned', getAllUsersBanned);
-router.put('/updateUser', updateUser);
-router.put('/disableUser', disableUser);
-// get all users
-// get by id
-// get all users banned
-// put update users
-// delete user
+router.get('/getUserById/:id', getUserById);
+router.get('/getAllUsersBanned', getAllUsersBanned, validateAdmin);
+router.put('/updateUser/:id', updateUser, validateUpdate);
+router.put('/disableUser', disableUser, validateAdmin, validateForBanUser);
 
 module.exports = router;

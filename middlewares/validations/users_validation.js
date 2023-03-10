@@ -5,9 +5,7 @@ const validateRegister = [
   check('name')
     .notEmpty()
     .withMessage('Ingrese datos en el campo nombre')
-    .custom((value, { req }) => !req.body.isAdmin) // cambiar de acuerdo al rol admin
-    .withMessage('Peticion no valida')
-    .custom((value, { req }) => !req.body.SuperAdmin) // cambiar de acuerdo al rol admin
+    .custom((value, { req }) => req.body.rol !== 'ADMIN_ROL')
     .withMessage('Peticion no valida'),
   check('email')
     .notEmpty()
