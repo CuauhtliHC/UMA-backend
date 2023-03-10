@@ -20,10 +20,11 @@ const restPackage = async (orderPackage, res) => {
 const addPackage = async (orderPackage, res) => {
   const data = {
     quantityInOrders:
-      parseInt(orderPackage.Package.quantityInOrders.quantityInOrders, 10)
+      parseInt(orderPackage.Package.quantityInOrders, 10)
       + parseInt(orderPackage.quantity, 10),
   };
   try {
+    console.log(orderPackage.Package.quantityInOrders);
     await putPackagesFromDb(orderPackage.Package, data);
   } catch (error) {
     res.status(500).json({
