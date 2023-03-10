@@ -7,19 +7,10 @@ class User extends S.Model {
     const salt = bcryptjs.genSaltSync();
     return bcryptjs.hashSync(password, salt);
   }
-  // validatePassword(password) {
-  //   return this.hash(password, this.salt).then(
-  //     (newHash) => newHash === this.password
-  //   );
-  // }
 
   validatePassword(password) {
     return bcryptjs.compareSync(password, this.password);
   }
-  // static validatePassword(password) {
-  //   console.log('entrooo');
-  //   // return this.encriptPass(password).then((newPassword) => newPassword === this.password);
-  // }
 }
 
 User.init(
