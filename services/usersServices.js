@@ -20,7 +20,7 @@ const userByIdService = async (id) => {
 };
 
 const usersBannedService = async () => {
-  const users = await User.findAll({ deleted: true });
+  const users = await User.findAll({ where: { deleted: true } });
   return users;
 };
 

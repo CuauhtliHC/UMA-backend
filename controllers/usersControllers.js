@@ -8,7 +8,6 @@ const {
   updateUserService,
 } = require('../services/usersServices');
 
-// register
 const userRegister = (req, res) => {
   const {
     name, email, password, userRol,
@@ -29,6 +28,10 @@ const userRegister = (req, res) => {
 };
 
 const getAllUsers = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   allUsersService()
     .then((users) => res.status(200).json({ users }))
     .catch((error) => {
@@ -37,7 +40,7 @@ const getAllUsers = (req, res) => {
 };
 
 const getUserById = (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   userByIdService(id)
     .then((user) => res.status(200).json({ user }))
     .catch((error) => {
@@ -46,8 +49,11 @@ const getUserById = (req, res) => {
 };
 
 const getAllUsersBanned = (req, res) => {
-  const { id } = req.body;
-  usersBannedService(id)
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  usersBannedService()
     .then((users) => res.status(200).json({ users }))
     .catch((error) => {
       res.status(500).json({ msg: 'Error - Get All Users Banned', error });
@@ -55,9 +61,14 @@ const getAllUsersBanned = (req, res) => {
 };
 
 const updateUser = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const {
-    id, email, name, password, status,
+    email, name, password, status,
   } = req.body;
+  const { id } = req.params;
   updateUserService(id, email, name, password, status)
     .then(() => res.status(201).json({ msg: 'User Updated' }))
     .catch((error) => {
@@ -66,7 +77,12 @@ const updateUser = (req, res) => {
 };
 
 const disableUser = (req, res) => {
-  disableUserService()
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  const { id } = req.params;
+  disableUserService(id)
     .then(() => res.status(201).json({ msg: 'User Updated' }))
     .catch((error) => {
       res.status(500).json({ msg: 'Error - Update User In Status Banned', error });
