@@ -1,4 +1,4 @@
-const validateToken = require('../config/tokens');
+const { validateToken } = require('../config/tokens');
 
 // validate auth
 
@@ -21,7 +21,7 @@ function validateAdmin(req, res, next) {
 
   const { user } = validateToken(token);
   if (!user) return res.sendStatus(401);
-  if (user.roleId !== 'ADMIN_ROL') return res.sendStatus(401);
+  if (user.rol !== 'ADMIN_ROL') return res.sendStatus(401);
   res.user = user;
 
   next();
@@ -34,7 +34,7 @@ function validateUser(req, res, next) {
 
   const { user } = validateToken(token);
   if (!user) return res.sendStatus(401);
-  if (user.roleId !== 'USER_ROL') return res.sendStatus(401);
+  if (user.rol !== 'USER_ROL') return res.sendStatus(401);
   res.user = user;
 
   next();

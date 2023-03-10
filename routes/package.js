@@ -15,9 +15,11 @@ const {
   validationsPut,
 } = require('../middlewares/validations/packages');
 
+const { validateAdmin } = require('../middlewares/auth');
+
 const route = Router();
 
-route.get('/', getPackageAll);
+route.get('/', validateAdmin, getPackageAll);
 route.get('/today', getPackageToday);
 route.get('/:id', validationsId, getPackageId);
 route.post('/', validationsPost, postPackage);

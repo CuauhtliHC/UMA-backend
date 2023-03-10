@@ -18,7 +18,7 @@ exports.loginControllers = (req, res) => {
         const payload = {
           name: user.name,
           email: user.email,
-          roleId: user.roleId,
+          rol: user.Role.rol,
         };
 
         const token = generateToken(payload);

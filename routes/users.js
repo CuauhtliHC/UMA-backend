@@ -2,12 +2,22 @@ const express = require('express');
 
 const router = express.Router();
 const {
-  userRegister, getAllUsers, getUserById, getAllUsersBanned, disableUser, updateUser,
+  userRegister,
+  getAllUsers,
+  getUserById,
+  getAllUsersBanned,
+  disableUser,
+  updateUser,
 } = require('../controllers/usersControllers');
-const { validateRegister } = require('../middlewares/validations/users_validation');
+const { validateControllers } = require('../controllers/validateControllers');
+const {
+  validateRegister,
+} = require('../middlewares/validations/users_validation');
+const { validateAuth, validateAdmin } = require('../middlewares/auth');
 
+router.get('/validate', validateAuth, validateControllers);
 router.post('/register', userRegister, validateRegister);
-router.get('/getAllUsers', getAllUsers);
+router.get('/getAllUsers', validateAdmin, getAllUsers);
 router.get('/getUserById', getUserById);
 router.get('/getAllUsersBanned', getAllUsersBanned);
 router.put('/updateUser', updateUser);
