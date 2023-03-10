@@ -1,11 +1,18 @@
 const User = require('../models/user');
+const { Role } = require('../models');
 
 const userRegisterService = async (name, email, password) => {
+  const role = await Role.findOne({ where: { rol: 'USER_ROL' } });
+  if (!role) {
+    const error = new Error('No fue encontrado el rol en la BBDD');
+    return error;
+  }
   const user = await User.create({
     name,
     email,
     password: User.encriptPass(password),
   });
+  user.setRole(role);
   return user;
 };
 
