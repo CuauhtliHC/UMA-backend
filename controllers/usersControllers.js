@@ -10,7 +10,7 @@ const {
 
 const userRegister = (req, res) => {
   const {
-    name, email, password, userRol,
+    name, email, password,
   } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -18,8 +18,7 @@ const userRegister = (req, res) => {
   }
   userRegisterService(name, email, password)
     .save()
-    .then((userCreated) => {
-      userCreated.setRole(userRol);
+    .then(() => {
       res.status(201).json({ msg: 'El Usuario fue creado con éxito', email });
     })
     .catch((error) => {
