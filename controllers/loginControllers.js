@@ -4,7 +4,7 @@ const { generateToken } = require('../config/tokens');
 exports.loginControllers = (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ where: { email } })
+  User.findOne({ where: { email }, include: { all: true } })
     .then((user) => {
       if (!user) {
         res
@@ -25,7 +25,7 @@ exports.loginControllers = (req, res) => {
         res.cookie('token', token);
 
         res.status(200).json({
-          msg: 'Loguin - User',
+          msg: 'Login - User',
           payload,
         });
       }
