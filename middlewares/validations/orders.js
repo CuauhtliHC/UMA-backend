@@ -6,6 +6,7 @@ const {
   validatePackageId,
   validateOrderId,
   validationStatusOrder,
+  validateInProgres,
 } = require('../validation-orders');
 
 const validationPost = [
@@ -18,16 +19,7 @@ const validationPost = [
   check('quantity').custom(validateQuantity),
   validate,
 ];
-const validationPut = [
-  validateAuth,
-  validateAdmin,
-  check('id', 'Value must be an integer').isInt(),
-  check('id').custom(validateOrderId),
-  check('quantity', 'Quantity field cannot be empty').not().isEmpty(),
-  check('quantity', 'Value must be an integer').isInt(),
-  check('quantity').custom(validateQuantity),
-  validate,
-];
+
 const validationDeleted = [
   validateAuth,
   validateAdmin,
@@ -44,9 +36,17 @@ const validationGet = [
   validate,
 ];
 
+const validationChangeStatus = [
+  validateAuth,
+  check('id', 'Value must be an integer').isInt(),
+  check('id').custom(validateOrderId),
+  check('statusOrder').custom(validateInProgres),
+  validate,
+];
+
 module.exports = {
   validationPost,
-  validationPut,
   validationGet,
   validationDeleted,
+  validationChangeStatus,
 };

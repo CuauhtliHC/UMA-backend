@@ -1,5 +1,6 @@
 const dayjs = require('dayjs');
 const { request } = require('express');
+const { status } = require('../config/statusOrders.json');
 const searchStatus = require('../services/InProgressOrdersRequests');
 const { getOrderIdRequest } = require('../services/ordersRequests');
 const { getIdPackagesFromDb } = require('../services/packageRequests');
@@ -22,13 +23,31 @@ const validatePackageId = async (packageId) => {
 
 const validateOrderId = async (id) => {
   const order = await getOrderIdRequest(id);
-  if (!order) {
-    throw new Error('The order does not exist');
+  if (!order || order.deleted) {
+    throw new Error('The order does not exist or was deleted');
   }
-  req.order = order;
+  if (
+    order.InProgressOrder.status === status.cancelled
+    || order.InProgressOrder.status === status.finished
+  ) {
+    throw new Error(
+      'No se puede modificar debido a que se encuentra cancelado o finalizado',
+    );
+  }
   if (order.dataValues.Package.deleted) {
     throw new Error('The package was deleted');
   }
+
+  req.order = order;
+  return true;
+};
+const validateInProgres = async (statusOrder) => {
+  const inProgressOrdersStatus = await searchStatus(status[statusOrder]);
+
+  if (!inProgressOrdersStatus) {
+    throw new Error('The order does not exist');
+  }
+  req.ordersStatus = inProgressOrdersStatus;
   return true;
 };
 
@@ -59,4 +78,5 @@ module.exports = {
   validateQuantity,
   validateOrderId,
   validationStatusOrder,
+  validateInProgres,
 };

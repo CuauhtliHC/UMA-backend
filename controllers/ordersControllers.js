@@ -1,13 +1,12 @@
 const { request, response } = require('express');
 const { status } = require('../config/statusOrders.json');
-const { buildObject } = require('../helpers/buildObject');
 const searchStatus = require('../services/InProgressOrdersRequests');
 const {
   postOrder,
-  putOrderPackage,
   getOrdersRequest,
   deleteOrderRequest,
   getOrderIdRequest,
+  canceladoOrder,
 } = require('../services/ordersRequests');
 
 const getOrders = async (req = request, res = response) => {
@@ -33,20 +32,27 @@ const postOrders = async (req = request, res = response) => {
 
   await postOrder({ quantity }, statusOrder, req.packageInfo, res);
 };
-const putOrders = async (req = request, res = response) => {
-  const dataUpdate = buildObject(req.body);
-  const { order } = req;
-  await putOrderPackage(dataUpdate, order, res);
-};
+
 const deletedOrders = async (req = request, res = response) => {
   const { order } = req;
   await deleteOrderRequest(order, res);
+};
+
+const statusOrderChange = async (req = request, res = response) => {
+  const { ordersStatus, order } = req;
+  const { id } = req.params;
+  if (ordersStatus.status === status.cancelled) {
+    await canceladoOrder(order, ordersStatus);
+  } else {
+    await order.setInProgressOrder(ordersStatus);
+  }
+  await getOrderIdRequest(id, res);
 };
 
 module.exports = {
   getOrders,
   getOrdersId,
   postOrders,
-  putOrders,
   deletedOrders,
+  statusOrderChange,
 };

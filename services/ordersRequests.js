@@ -1,4 +1,6 @@
+const { status } = require('../config/statusOrders.json');
 const { Order, InProgressOrders, Package } = require('../models');
+const searchStatus = require('./InProgressOrdersRequests');
 const { putPackagesFromDb } = require('./packageRequests');
 
 const restPackage = async (orderPackage, res) => {
@@ -24,7 +26,6 @@ const addPackage = async (orderPackage, res) => {
       + parseInt(orderPackage.quantity, 10),
   };
   try {
-    console.log(orderPackage.Package.quantityInOrders);
     await putPackagesFromDb(orderPackage.Package, data);
   } catch (error) {
     res.status(500).json({
@@ -36,7 +37,16 @@ const addPackage = async (orderPackage, res) => {
 };
 const getOrderIdRequest = async (id, res = null) => {
   try {
-    const order = await Order.findByPk(id, { include: 'Package' });
+    const order = await Order.findByPk(id, {
+      include: [
+        { model: Package, as: 'Package' },
+        {
+          model: InProgressOrders,
+          as: 'InProgressOrder',
+          attributes: ['status'],
+        },
+      ],
+    });
     if (res) {
       return res.status(200).json({
         msg: `Get Orders Id ${id}`,
@@ -72,30 +82,22 @@ const postOrder = async (date, statusOrder, packageInfo, res) => {
   }
 };
 
-const putOrderPackage = async (data, orderPackage, res) => {
-  try {
-    await restPackage(orderPackage, res);
-    const updateOrder = await orderPackage.update(data, { returning: true });
-    await addPackage(updateOrder, res);
-    res.status(200).json({
-      msg: 'Update - Order',
-      updateOrder,
-    });
-  } catch (error) {
-    res.status(500).json({
-      msg: 'Error Put Order',
-      location: 'services/ordersRequests.js/putOrderPackage()',
-      error,
-    });
+const canceladoOrder = async (order, statusCancelle = null) => {
+  await restPackage(order);
+  if (!statusCancelle) {
+    const deleteStatus = await searchStatus(status.cancelled);
+    await order.setInProgressOrder(deleteStatus);
+  } else {
+    await order.setInProgressOrder(statusCancelle);
   }
 };
 const deleteOrderRequest = async (order, res) => {
   try {
+    await canceladoOrder(order);
     const updateOrder = await order.update(
       { deleted: true },
       { returning: true },
     );
-    await restPackage(updateOrder);
     res.status(200).json({
       msg: 'Deleted - Order',
       updateOrder,
@@ -117,6 +119,7 @@ const getOrdersRequest = async (query, res, deleted = false) => {
         {
           model: InProgressOrders,
           as: 'InProgressOrder',
+          attributes: ['status'],
           where: query.status,
         },
         {
@@ -144,6 +147,6 @@ module.exports = {
   getOrdersRequest,
   getOrderIdRequest,
   postOrder,
-  putOrderPackage,
   deleteOrderRequest,
+  canceladoOrder,
 };
