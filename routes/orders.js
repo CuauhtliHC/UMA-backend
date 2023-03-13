@@ -3,8 +3,8 @@ const {
   getOrders,
   getOrdersId,
   postOrders,
-  putOrders,
   deletedOrders,
+  statusOrderChange,
 } = require('../controllers/ordersControllers');
 
 const {
@@ -12,9 +12,9 @@ const {
 } = require('../middlewares/validations/generic_validations');
 const {
   validationPost,
-  validationPut,
   validationGet,
   validationDeleted,
+  validationChangeStatus,
 } = require('../middlewares/validations/orders');
 
 const router = Router();
@@ -22,8 +22,12 @@ const router = Router();
 router.get('/', validationGet, getOrders);
 router.get('/deleted', validationGet, getOrders);
 router.get('/:id', validationsId, getOrdersId);
-router.post('create/', validationPost, postOrders);
-router.put('edit/:id', validationPut, putOrders);
-router.delete('delete/:id', validationDeleted, deletedOrders);
+router.post('/create/', validationPost, postOrders);
+router.put(
+  '/status/:statusOrder/:id',
+  validationChangeStatus,
+  statusOrderChange,
+);
+router.delete('/delete/:id', validationDeleted, deletedOrders);
 
 module.exports = router;
