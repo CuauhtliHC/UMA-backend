@@ -19,7 +19,7 @@ const {
   validateForBanUser,
 } = require('../middlewares/validations/validate_update_user');
 
-router.get('/validate', validateAuth, validateControllers);
+router.get('/me', validateAuth, validateControllers);
 router.post('/register', userRegister, validateRegister);
 router.get('/getAllUsers', validateAdmin, getAllUsers);
 router.get('/getUserById/:id', getUserById);
