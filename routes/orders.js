@@ -22,8 +22,8 @@ const router = Router();
 router.get('/', validationGet, getOrders);
 router.get('/deleted', validationGet, getOrders);
 router.get('/:id', validationsId, getOrdersId);
-router.post('/', validationPost, postOrders);
-router.put('/:id', validationPut, putOrders);
-router.delete('/:id', validationDeleted, deletedOrders);
+router.post('create/', validationPost, postOrders);
+router.put('edit/:id', validationPut, putOrders);
+router.delete('delete/:id', validationDeleted, deletedOrders);
 
 module.exports = router;
