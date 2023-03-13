@@ -11,8 +11,9 @@ const {
   validationsId,
 } = require('../middlewares/validations/generic_validations');
 const {
-  validationsPost,
-  validationsPut,
+  validationsPostPakage,
+  validationsPutPakage,
+  validationDeletedPakage,
 } = require('../middlewares/validations/packages');
 
 const { validateAdmin } = require('../middlewares/auth');
@@ -22,8 +23,8 @@ const route = Router();
 route.get('/', validateAdmin, getPackageAll);
 route.get('/today', getPackageToday);
 route.get('/:id', validationsId, getPackageId);
-route.post('/', validationsPost, postPackage);
-route.put('/:id', validationsPut, putPackage);
-route.delete('/:id', validationsId, deletePackage);
+route.post('/', validationsPostPakage, postPackage);
+route.put('/:id', validationsPutPakage, putPackage);
+route.delete('/:id', validationDeletedPakage, deletePackage);
 
 module.exports = route;

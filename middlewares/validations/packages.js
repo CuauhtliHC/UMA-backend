@@ -1,4 +1,5 @@
 const { check } = require('express-validator');
+const { validateAuth, validateAdmin } = require('../auth');
 const { validate } = require('../validate');
 const {
   quantityGreaterThanCero,
@@ -6,7 +7,9 @@ const {
   validatedWeight,
 } = require('../validate-package');
 
-exports.validationsPost = [
+const validationsPostPakage = [
+  validateAuth,
+  validateAdmin,
   check('address', 'Address field required').not().isEmpty(),
   check('addresses', 'addresses field required').not().isEmpty(),
   check('weight', 'weight field required').not().isEmpty(),
@@ -20,10 +23,25 @@ exports.validationsPost = [
   validate,
 ];
 
-exports.validationsPut = [
+const validationsPutPakage = [
+  validateAuth,
+  validateAdmin,
   check('quantityOfPackages').custom(quantityGreaterThanCero),
   check('id', 'the id has to be a Int').isInt(),
   check('weight').custom(validatedWeight),
   check('dateOfDelivery').custom(validatedDeliveryDate),
   validate,
 ];
+
+const validationDeletedPakage = [
+  validateAuth,
+  validateAdmin,
+  check('id', 'the id has to be a Int').isInt(),
+  validate,
+];
+
+module.exports = {
+  validationDeletedPakage,
+  validationsPutPakage,
+  validationsPostPakage,
+};
