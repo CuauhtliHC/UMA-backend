@@ -1,5 +1,6 @@
 const { check } = require('express-validator');
 const { checkUserExists } = require('../update_user_validation_custom');
+const { validate } = require('../validate');
 
 const validateUpdate = [
   check('id').notEmpty().withMessage('Id no valido').custom(checkUserExists),
@@ -15,10 +16,7 @@ const validateUpdate = [
     .normalizeEmail()
     .isEmail()
     .withMessage('Ingrese un correo valido'),
+  validate,
 ];
 
-const validateForBanUser = [
-  check('id').notEmpty().withMessage('Id no valido').custom(checkUserExists),
-];
-
-module.exports = { validateUpdate, validateForBanUser };
+module.exports = { validateUpdate };

@@ -1,5 +1,7 @@
 const { check } = require('express-validator');
-const { checkEmailExists, checkRolExists } = require('../users_validation_custom');
+const { validate } = require('../validate');
+const { checkEmailExists } = require('../users_validation_custom');
+const { checkUserExists } = require('../update_user_validation_custom');
 
 const validateRegister = [
   check('name')
@@ -29,13 +31,15 @@ const validateRegister = [
     .withMessage('Debe contener por lo menos un caracter especial')
     .isLength({ min: 8 })
     .withMessage('Debe contener minimo 6 caracteres'),
-  check('userRol')
-    .notEmpty()
-    .withMessage('Ingrese datos en el campo rol')
-    .bail()
-    .custom(checkRolExists),
+  validate,
+];
+
+const validateCheckUserIdExists = [
+  check('id').notEmpty().withMessage('Id no valido').custom(checkUserExists),
+  validate,
 ];
 
 module.exports = {
   validateRegister,
+  validateCheckUserIdExists,
 };

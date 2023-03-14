@@ -11,20 +11,20 @@ const {
 } = require('../controllers/usersControllers');
 const { validateControllers } = require('../controllers/validateControllers');
 const {
-  validateRegister,
+  validateRegister, validateCheckUserIdExists,
 } = require('../middlewares/validations/users_validation');
 const { validateAuth, validateAdmin } = require('../middlewares/auth');
 const {
   validateUpdate,
-  validateForBanUser,
 } = require('../middlewares/validations/validate_update_user');
+const { validateLimit } = require('../middlewares/validations/validate_limit');
 
 router.get('/me', validateAuth, validateControllers);
-router.post('/register', userRegister, validateRegister);
-router.get('/getAllUsers', validateAdmin, getAllUsers);
-router.get('/getUserById/:id', getUserById);
-router.get('/getAllUsersBanned', getAllUsersBanned, validateAdmin);
-router.put('/updateUser/:id', updateUser, validateUpdate);
-router.put('/disableUser', disableUser, validateAdmin, validateForBanUser);
+router.post('/register', validateRegister, userRegister);
+router.get('/getAllUsers/:limit', validateAdmin, validateLimit, getAllUsers);
+router.get('/getUserById/:id', validateCheckUserIdExists, getUserById);
+router.get('/getAllUsersBanned/:limit', validateAdmin, validateLimit, getAllUsersBanned);
+router.put('/updateUser/:id', validateUpdate, updateUser);
+router.put('/disableUser/:id', validateAdmin, validateCheckUserIdExists, disableUser);
 
 module.exports = router;
