@@ -56,7 +56,7 @@ class Server {
   }
 
   listen() {
-    this.app.listen(this.port, () => {
+    return this.app.listen(this.port, () => {
       console.log(`Escuchando en port ${this.port}`);
     });
   }

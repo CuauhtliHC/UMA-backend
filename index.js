@@ -4,4 +4,6 @@ require('dotenv').config();
 
 const server = new Server();
 
-server.listen();
+const puertoOpen = server.listen();
+
+module.exports = { server, puertoOpen };
