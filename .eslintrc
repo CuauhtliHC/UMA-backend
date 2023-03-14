@@ -15,6 +15,9 @@
   "plugins": ["node"],
   "rules": {
     "linebreak-style": 0,
+    "node/no-unpublished-require": ["error", {
+      "allowModules": ["supertest"]
+  }],
     "no-unused-vars": "warn",
     "no-console": "off",
     "arrow-body-style": "off",
@@ -31,7 +34,7 @@
       "warn",
       { "devDependencies": ["**/*.stories.js", "**/*.spec.js"] }
     ],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off"    
   },
   "ignorePatterns": ["dist/", "node_modules/", "storybook-static/"],
   "env": {
