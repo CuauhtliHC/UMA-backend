@@ -16,8 +16,12 @@ const userRegisterService = async (name, email, password) => {
   return user;
 };
 
-const allUsersService = async () => {
-  const users = await User.findAll();
+const allUsersService = async (limit) => {
+  const users = await User.findAndCountAll({
+    limit,
+    offset: 0,
+    where: { deleted: false },
+  });
   return users;
 };
 
@@ -26,21 +30,34 @@ const userByIdService = async (id) => {
   return user;
 };
 
-const usersBannedService = async () => {
-  const users = await User.findAll({ where: { deleted: true } });
+const usersBannedService = async (limit) => {
+  const users = await User.findAndCountAll({
+    limit,
+    offset: 0,
+    where: { deleted: true },
+  });
   return users;
 };
 
 const updateUserService = async (id, email, name, password, status) => {
-  const user = await User.update({
-    email, name, password, status,
-  }, { where: { id } });
+  const user = await User.update(
+    {
+      email,
+      name,
+      password,
+      status,
+    },
+    { where: { id } },
+  );
   return user;
 };
 
 const disableUserService = async (id) => {
   const findUser = await User.findOne({ where: { id } });
-  const user = await User.update({ deleted: !findUser.deleted }, { where: { id } });
+  const user = await User.update(
+    { deleted: !findUser.deleted },
+    { where: { id } },
+  );
   return user;
 };
 
