@@ -32,9 +32,29 @@ const creationUserAdmin = async () => {
     await user.setRole(role);
   }
 };
+const creationUser = async () => {
+  const [role, created] = await Role.findOrCreate({
+    where: { rol: 'USER_ROL' },
+  });
+  const [user, userCreated] = await User.findOrCreate({
+    where: {
+      email: 'test@test.com',
+    },
+    defaults: {
+      name: 'test',
+      password: User.encriptPass('testUma.'),
+    },
+  });
+  const existingRole = await user.getRole();
+
+  if (existingRole === null || existingRole !== 1) {
+    await user.setRole(role);
+  }
+};
 
 module.exports = {
   creationStatusOrdersRequired,
   creationRolesRequired,
   creationUserAdmin,
+  creationUser,
 };
