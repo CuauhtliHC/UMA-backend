@@ -2,17 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { dbConection } = require('../database/conectBD');
-const {
-  creationRolesRequired,
-  creationStatusOrdersRequired,
-  creationUserAdmin,
-} = require('../services/creationTablesRequired');
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    this.PackagePath = '/api/package';
+    this.packagePath = '/api/package';
     this.usersPath = '/api/users';
     this.loginPath = '/api/login';
     this.ordersPath = '/api/orders';
@@ -21,17 +16,10 @@ class Server {
     this.middLewares(); // controla antes de la llegada al servidor
 
     this.routes(); // rutas
-    this.creationTables();
   }
 
   async conectarDB() {
     await dbConection();
-  }
-
-  async creationTables() {
-    await creationRolesRequired();
-    await creationStatusOrdersRequired();
-    await creationUserAdmin();
   }
 
   // middlewares
@@ -48,7 +36,7 @@ class Server {
   }
 
   routes() {
-    this.app.use(this.PackagePath, require('../routes/package'));
+    this.app.use(this.packagePath, require('../routes/package'));
     this.app.use(this.usersPath, require('../routes/users'));
     this.app.use(this.loginPath, require('../routes/login'));
     this.app.use(this.ordersPath, require('../routes/orders'));
