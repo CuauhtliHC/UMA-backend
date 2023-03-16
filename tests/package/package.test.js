@@ -37,14 +37,14 @@ const initPackages = [
     address: 'cordoba 2000 1640',
     addresses: 'Pedro',
     weight: 12,
-    dateOfDelivery: dayjs('2023/03/15').utc().format(),
+    dateOfDelivery: dayjs().utc().format(),
     quantityOfPackages: 3,
   },
   {
     address: 'cordoba 2000 1640',
     addresses: 'Pedro',
     weight: 12,
-    dateOfDelivery: dayjs('2023/03/15').utc().format(),
+    dateOfDelivery: dayjs().utc().format(),
     quantityOfPackages: 3,
   },
 ];
@@ -249,6 +249,129 @@ describe('Package - Delete', () => {
     const packages = await Package.findByPk(id);
     const packagesJson = packages.toJSON();
     expect(packagesJson.deleted).toBe(true);
+  });
+});
+
+describe('Package - Put', () => {
+  const id = 2;
+
+  test('Error en caso de no estar loguiado', async () => {
+    const prueb = await api.put(`${packagePath}/1`);
+    expect(prueb.status).toBe(401);
+  });
+  test('Error en caso de no enviar un id INT', async () => {
+    const prueb = await api
+      .put(`${packagePath}/f`)
+      .set('Cookie', cookieAdmin.headers['set-cookie']);
+    expect(prueb.status).toBe(400);
+  });
+  test('Devuelve Error en caso de no ser Administrador', async () => {
+    await api
+      .put(`${packagePath}/${id}`)
+      .set('Cookie', cookieUser.headers['set-cookie'])
+      .expect(401);
+  });
+  test('Edita la informacion enviada', async () => {
+    const packageUpdate = {
+      address: 'Cordoba 1640 1640',
+      addresses: 'Pedro',
+      weight: 3,
+      dateOfDelivery: '2023/05/23',
+      quantityOfPackages: 3,
+    };
+    await api
+      .put(`${packagePath}/${id}`)
+      .send(packageUpdate)
+      .set('Cookie', cookieAdmin.headers['set-cookie'])
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
+    const packages = await Package.findByPk(id);
+    const packagesJson = packages.toJSON();
+    expect(packagesJson.address).toBe(packageUpdate.address);
+    expect(packagesJson.addresses).toBe(packageUpdate.addresses);
+    expect(packagesJson.weight).toBe(packageUpdate.weight);
+    expect(dayjs(packagesJson.dateOfDelivery).utc()).toStrictEqual(
+      dayjs(packageUpdate.dateOfDelivery).utc(),
+    );
+    expect(packagesJson.quantityOfPackages).toBe(
+      packageUpdate.quantityOfPackages,
+    );
+  });
+  describe('Mal enviada la informacion y no edita', () => {
+    test('Fecha', async () => {
+      const packageUpdate = {
+        dateOfDelivery: '2022/05/23',
+      };
+      await api
+        .put(`${packagePath}/${id}`)
+        .send(packageUpdate)
+        .set('Cookie', cookieAdmin.headers['set-cookie'])
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+      const packages = await Package.findByPk(id);
+      const packagesJson = packages.toJSON();
+      expect(dayjs(packagesJson.dateOfDelivery).utc()).not.toStrictEqual(
+        dayjs(packageUpdate.dateOfDelivery).utc(),
+      );
+    });
+    test('Address', async () => {
+      const packageUpdate = {
+        address: 456,
+        };
+      await api
+        .put(`${packagePath}/${id}`)
+        .send(packageUpdate)
+        .set('Cookie', cookieAdmin.headers['set-cookie'])
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+      const packages = await Package.findByPk(id);
+      const packagesJson = packages.toJSON();
+      expect(packagesJson.address).not.toBe(packageUpdate.address);
+    });
+    test('addresses', async () => {
+      const packageUpdate = {
+        addresses: 54,
+        };
+      await api
+        .put(`${packagePath}/${id}`)
+        .send(packageUpdate)
+        .set('Cookie', cookieAdmin.headers['set-cookie'])
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+      const packages = await Package.findByPk(id);
+      const packagesJson = packages.toJSON();
+      expect(packagesJson.addresses).not.toBe(packageUpdate.addresses);
+    });
+    test('Weighy', async () => {
+      const packageUpdate = {
+        weight: -3,
+        };
+      await api
+        .put(`${packagePath}/${id}`)
+        .send(packageUpdate)
+        .set('Cookie', cookieAdmin.headers['set-cookie'])
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+      const packages = await Package.findByPk(id);
+      const packagesJson = packages.toJSON();
+      expect(packagesJson.weight).not.toBe(packageUpdate.weight);
+    });
+    test('QuantityOfPackages', async () => {
+      const packageUpdate = {
+        quantityOfPackages: -3,
+      };
+      await api
+        .put(`${packagePath}/${id}`)
+        .send(packageUpdate)
+        .set('Cookie', cookieAdmin.headers['set-cookie'])
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+      const packages = await Package.findByPk(id);
+      const packagesJson = packages.toJSON();
+      expect(packagesJson.quantityOfPackages).not.toBe(
+        packageUpdate.quantityOfPackages,
+      );
+    });
   });
 });
 
