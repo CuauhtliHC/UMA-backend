@@ -28,6 +28,8 @@ const validationsPutPakage = [
   validateAdmin,
   check('quantityOfPackages').custom(quantityGreaterThanCero),
   check('id', 'the id has to be a Int').isInt(),
+  check('address', 'the Address has to be a String').isString(),
+  check('addresses', 'the Addresses has to be a String').isString(),
   check('weight').custom(validatedWeight),
   check('dateOfDelivery').custom(validatedDeliveryDate),
   validate,

@@ -28,9 +28,13 @@ const getPackageAll = async (req = request, res = response) => {
   }
 };
 const getPackageToday = async (req = request, res = response) => {
-  const date = dayjs().format('YYYY-MM-DD');
+  const dateInicio = dayjs().startOf('day').toDate();
+  const dateFin = dayjs().endOf('day').toDate();
   try {
-    const datePackageToday = await getAllPackagesTodayFromDb(date);
+    const datePackageToday = await getAllPackagesTodayFromDb(
+      dateInicio,
+      dateFin,
+    );
     res.status(200).json({
       msg: 'All Package',
       total: datePackageToday.length,

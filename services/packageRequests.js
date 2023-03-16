@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const Package = require('../models/package');
 
 const getAllPackagesFromDb = async () => {
@@ -10,10 +11,13 @@ const getAllPackagesFromDb = async () => {
     throw new Error('Error get all Package', error);
   }
 };
-const getAllPackagesTodayFromDb = async (date) => {
+const getAllPackagesTodayFromDb = async (fechaInicial, fechaFin) => {
   try {
     const datePackageToday = await Package.findAll({
-      where: { dateOfDelivery: date, deleted: false },
+      where: {
+        dateOfDelivery: { [Sequelize.Op.between]: [fechaInicial, fechaFin] },
+        deleted: false,
+      },
     });
     return datePackageToday;
   } catch (error) {

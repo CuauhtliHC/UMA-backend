@@ -22,11 +22,11 @@ Package.init(
       allowNull: false,
     },
     quantityOfPackages: {
-      type: S.DECIMAL,
+      type: S.INTEGER,
       allowNull: false,
     },
     quantityInOrders: {
-      type: S.DECIMAL,
+      type: S.INTEGER,
       defaultValue: 0,
     },
     deleted: {
