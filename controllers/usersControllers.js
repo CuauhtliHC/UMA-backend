@@ -23,7 +23,7 @@ const userRegister = (req, res) => {
 const getAllUsers = (req, res) => {
   const { limit } = req.params;
   allUsersService(limit)
-    .then((users) => res.status(200).json({ users }))
+    .then((users) => res.status(200).json(users))
     .catch((error) => {
       res.status(500).json({ msg: 'Error - Get All Users', error });
     });
@@ -41,7 +41,7 @@ const getUserById = (req, res) => {
 const getAllUsersBanned = (req, res) => {
   const { limit } = req.params;
   usersBannedService(limit)
-    .then((users) => res.status(200).json({ users }))
+    .then((users) => res.status(200).json(users))
     .catch((error) => {
       res.status(500).json({ msg: 'Error - Get All Users Banned', error });
     });
