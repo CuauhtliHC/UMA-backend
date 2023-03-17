@@ -6,10 +6,10 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "cross-env NODE_ENV=test jest --verbose --silent",
-    "testClg": "cross-env NODE_ENV=test jest --verbose",
+    "test": "cross-env NODE_ENV=development jest --verbose --silent",
+    "testClg": "cross-env NODE_ENV=development jest --verbose",
     "test:watch": "npm run test -- --watch",
-    "bbdd": "node ./services/creationTablesRequired.js" ,
+    "bbdd": "node ./helpers/controlAddDataBbDd.js" ,
     "prepare": "husky install"
   },
   "keywords": [],

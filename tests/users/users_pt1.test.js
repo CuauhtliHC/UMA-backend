@@ -1,13 +1,19 @@
 const supertest = require('supertest');
 const { server } = require('../../index');
 
+const { dbClose } = require('../../database/conectBD');
+const { User } = require('../../models');
+const { creationUsers } = require('../../services/addDataBbDd');
+
 const { app, loginPath, usersPath } = server;
 const api = supertest(app);
 
 let cookieAdmin;
 let cookieUser;
 
-beforeEach(async () => {
+beforeAll(async () => {
+  await User.sync({ force: true });
+  await creationUsers();
   const userAdmin = {
     email: 'admin@admin.com',
     password: 'adminUma.',
@@ -282,7 +288,7 @@ describe('PUT /disableUser/:id', () => {
   });
 });
 
-afterAll(async () => {
-  // puertoOpen.close();
-  // Sequelize.close();
+afterAll(() => {
+  server.serverListen.close();
+  // dbClose();
 });
