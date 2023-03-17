@@ -8,8 +8,8 @@ const validateLimit = [
     .bail()
     .isInt()
     .withMessage('El limit debe ser entero')
-    .custom((value) => value > 2)
-    .withMessage('El limit debe ser mayor que 2'),
+    .custom((value) => value > 5)
+    .withMessage('El limit debe ser mayor que 5'),
   validate,
 ];
 

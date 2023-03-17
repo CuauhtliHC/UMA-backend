@@ -30,7 +30,7 @@ const validateRegister = [
     .matches(/\W/)
     .withMessage('Debe contener por lo menos un caracter especial')
     .isLength({ min: 8 })
-    .withMessage('Debe contener minimo 6 caracteres'),
+    .withMessage('Debe contener minimo 8 caracteres'),
   validate,
 ];
 
