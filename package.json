@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "NODE_ENV=development jest --verbose ",
+    "test": "NODE_ENV=development jest --verbose --silent",
     "test:watch": "npm run test -- --watch",
     "bbdd": "node ./services/creationTablesRequired.js" ,
     "prepare": "husky install"
