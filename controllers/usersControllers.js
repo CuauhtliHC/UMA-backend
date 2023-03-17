@@ -12,7 +12,6 @@ const userRegister = (req, res) => {
     name, email, password,
   } = req.body;
   userRegisterService(name, email, password)
-    .save()
     .then(() => {
       res.status(201).json({ msg: 'El Usuario fue creado con éxito', email });
     })
