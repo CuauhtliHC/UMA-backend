@@ -24,7 +24,7 @@ router.post('/register', validateRegister, userRegister);
 router.get('/getAllUsers/:limit', validateAdmin, validateLimit, getAllUsers);
 router.get('/getUserById/:id', validateCheckUserIdExists, getUserById);
 router.get('/getAllUsersBanned/:limit', validateAdmin, validateLimit, getAllUsersBanned);
-router.put('/updateUser/:id', validateUpdate, validateCheckUserIdExists, updateUser);
+router.put('/updateUser/:id', validateCheckUserIdExists, validateUpdate, updateUser);
 router.put('/disableUser/:id', validateAdmin, validateCheckUserIdExists, disableUser);
 
 module.exports = router;
