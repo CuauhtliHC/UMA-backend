@@ -13,7 +13,7 @@ const dbConection = async () => {
     await creationRolesRequired();
     await creationStatusOrdersRequired();
     await creationUserAdmin();
-    if (db.config.database === 'uma-bbdd-test') {
+    if (db.config.database === 'uma_back') {
       await creationUser();
     }
   } catch (error) {

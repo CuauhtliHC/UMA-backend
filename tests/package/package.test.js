@@ -376,6 +376,6 @@ describe('Package - Put', () => {
 });
 
 afterAll(() => {
-  // puertoOpen.close();
-  // Sequelize.close();
+  puertoOpen.close();
+  Sequelize.close();
 });

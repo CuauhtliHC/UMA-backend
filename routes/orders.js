@@ -20,7 +20,7 @@ const {
 const router = Router();
 
 router.get('/', validationGet, getOrders);
-router.get('/deleted', validationGet, getOrders);
+router.get('/deleted', validationGet, getOrders); // preguntar porque es un GET
 router.get('/:id', validationsId, getOrdersId);
 router.post('/create/', validationPost, postOrders);
 router.put(
