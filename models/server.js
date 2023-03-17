@@ -6,7 +6,7 @@ const { dbConection } = require('../database/conectBD');
 class Server {
   constructor() {
     this.app = express();
-    this.port = process.env.PORT;
+    this.port = process.env.PORT || 3001;
     this.packagePath = '/api/package';
     this.usersPath = '/api/users';
     this.loginPath = '/api/login';
@@ -44,7 +44,7 @@ class Server {
   }
 
   listen() {
-    return this.app.listen(this.port, () => {
+    this.serverListen = this.app.listen(this.port, () => {
       console.log(`Escuchando en port ${this.port}`);
     });
   }

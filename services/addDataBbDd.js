@@ -1,3 +1,4 @@
+const { dbConection, dbClose } = require('../database/conectBD');
 const { Role, InProgressOrders, User } = require('../models');
 
 const creationRolesRequired = async () => {
@@ -5,6 +6,7 @@ const creationRolesRequired = async () => {
   await Role.findOrCreate({ where: { rol: 'USER_ROL' } });
   console.log('Roles Creados');
 };
+
 const creationStatusOrdersRequired = async () => {
   await InProgressOrders.findOrCreate({ where: { status: 'PENDING' } });
   await InProgressOrders.findOrCreate({ where: { status: 'IN_PROGRESS' } });
@@ -31,7 +33,9 @@ const creationUserAdmin = async () => {
   if (existingRole === null || existingRole !== 1) {
     await user.setRole(role);
   }
+  console.log('UserAdmin');
 };
+
 const creationUser = async () => {
   const [role, created] = await Role.findOrCreate({
     where: { rol: 'USER_ROL' },
@@ -50,11 +54,24 @@ const creationUser = async () => {
   if (existingRole === null || existingRole !== 1) {
     await user.setRole(role);
   }
+  console.log('User');
+};
+
+const creationUsers = async () => {
+  await creationUserAdmin();
+  await creationUser();
+};
+
+const addDataBbDd = async () => {
+  await dbConection();
+  await creationRolesRequired();
+  await creationStatusOrdersRequired();
+  await creationUserAdmin();
+  await creationUser();
+  await dbClose();
 };
 
 module.exports = {
-  creationStatusOrdersRequired,
-  creationRolesRequired,
-  creationUserAdmin,
-  creationUser,
+  creationUsers,
+  addDataBbDd,
 };

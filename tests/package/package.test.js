@@ -1,9 +1,10 @@
 const supertest = require('supertest');
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
-const Sequelize = require('../../database/database');
-const { server, puertoOpen } = require('../../index');
+const { dbClose } = require('../../database/conectBD');
+const { server } = require('../../index');
 const { Package } = require('../../models');
+const { creationUsers } = require('../../services/addDataBbDd');
 
 dayjs.extend(utc);
 
@@ -50,12 +51,8 @@ const initPackages = [
 ];
 let cookieAdmin;
 let cookieUser;
-
-beforeEach(async () => {
-  await Package.sync({ force: true });
-  initPackages.forEach(async (initPackage) => {
-    await Package.create(initPackage);
-  });
+beforeAll(async () => {
+  await creationUsers();
   const userAdmin = {
     email: 'admin@admin.com',
     password: 'adminUma.',
@@ -66,6 +63,13 @@ beforeEach(async () => {
   };
   cookieAdmin = await api.post(`${loginPath}/`).send(userAdmin);
   cookieUser = await api.post(`${loginPath}/`).send(user);
+});
+
+beforeEach(async () => {
+  await Package.sync({ force: true });
+  initPackages.forEach(async (initPackage) => {
+    await Package.create(initPackage);
+  });
 });
 
 describe('Package - GET', () => {
@@ -317,7 +321,7 @@ describe('Package - Put', () => {
     test('Address', async () => {
       const packageUpdate = {
         address: 456,
-        };
+      };
       await api
         .put(`${packagePath}/${id}`)
         .send(packageUpdate)
@@ -331,7 +335,7 @@ describe('Package - Put', () => {
     test('addresses', async () => {
       const packageUpdate = {
         addresses: 54,
-        };
+      };
       await api
         .put(`${packagePath}/${id}`)
         .send(packageUpdate)
@@ -345,7 +349,7 @@ describe('Package - Put', () => {
     test('Weighy', async () => {
       const packageUpdate = {
         weight: -3,
-        };
+      };
       await api
         .put(`${packagePath}/${id}`)
         .send(packageUpdate)
@@ -375,7 +379,8 @@ describe('Package - Put', () => {
   });
 });
 
-afterAll(() => {
-  puertoOpen.close();
-  Sequelize.close();
+
+afterAll(async () => {
+  server.serverListen.close();
+  await dbClose();
 });

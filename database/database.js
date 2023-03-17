@@ -7,7 +7,7 @@ const {
 } = process.env;
 
 module.exports = new Sequelize(
-  NODE_ENV === 'test' ? DATABASE_TEST : DATABASE,
+  NODE_ENV === 'development' ? DATABASE_TEST : DATABASE,
   USER,
   PASSWORD,
   options,

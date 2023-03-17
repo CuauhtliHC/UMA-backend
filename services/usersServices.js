@@ -21,6 +21,8 @@ const allUsersService = async (limit) => {
     limit,
     offset: 0,
     where: { deleted: false },
+    attributes: ['id', 'name', 'email', 'active', 'deleted', 'roleId'],
+    order: [['id', 'ASC']],
   });
   return users;
 };
@@ -35,6 +37,8 @@ const usersBannedService = async (limit) => {
     limit,
     offset: 0,
     where: { deleted: true },
+    attributes: ['id', 'name', 'email', 'active', 'deleted', 'roleId'],
+    order: [['id', 'ASC']],
   });
   return users;
 };
