@@ -8,6 +8,8 @@ const {
   getAllUsersBanned,
   disableUser,
   updateUser,
+  forgotPassword,
+  resetPassword,
 } = require('../controllers/usersControllers');
 const { validateControllers } = require('../controllers/validateControllers');
 const {
@@ -18,6 +20,8 @@ const {
   validateUpdate,
 } = require('../middlewares/validations/validate_update_user');
 const { validateLimit } = require('../middlewares/validations/validate_limit');
+const { validateCheckEmail } = require('../middlewares/validations/validate_email');
+const { validateTokenRestorePassword } = require('../middlewares/validations/validate_token_restore');
 
 router.get('/me', validateAuth, validateControllers);
 router.post('/register', validateRegister, userRegister);
@@ -26,5 +30,7 @@ router.get('/getUserById/:id', validateCheckUserIdExists, getUserById);
 router.get('/getAllUsersBanned/:limit', validateAdmin, validateLimit, getAllUsersBanned);
 router.put('/updateUser/:id', validateCheckUserIdExists, validateUpdate, updateUser);
 router.put('/disableUser/:id', validateAdmin, validateCheckUserIdExists, disableUser);
+router.put('/forgotPassword', validateCheckEmail, forgotPassword);
+router.get('/reset-password/:token', validateTokenRestorePassword, resetPassword);
 
 module.exports = router;

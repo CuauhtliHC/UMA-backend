@@ -9,7 +9,7 @@
     "test": "cross-env NODE_ENV=development jest --verbose --silent",
     "testClg": "cross-env NODE_ENV=development jest --verbose",
     "test:watch": "npm run test -- --watch",
-    "bbdd": "node ./helpers/controlAddDataBbDd.js" ,
+    "bbdd": "node ./helpers/controlAddDataBbDd.js",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -25,6 +25,7 @@
     "express": "^4.18.2",
     "express-validator": "^6.14.3",
     "jsonwebtoken": "^9.0.0",
+    "nodemailer": "^6.9.1",
     "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.29.0"

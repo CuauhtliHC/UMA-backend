@@ -5,12 +5,13 @@ const {
   usersBannedService,
   disableUserService,
   updateUserService,
+  forgotPasswordService,
+  resetPasswordService,
 } = require('../services/usersServices');
+const { sendEmailRestorePassword } = require('../utils/sendEmail');
 
 const userRegister = (req, res) => {
-  const {
-    name, email, password,
-  } = req.body;
+  const { name, email, password } = req.body;
   userRegisterService(name, email, password)
     .then(() => {
       res.status(201).json({ msg: 'El Usuario fue creado con éxito', email });
@@ -55,7 +56,9 @@ const updateUser = (req, res) => {
   updateUserService(id, email, name, password, status)
     .then(() => res.status(201).json({ msg: 'User Updated' }))
     .catch((error) => {
-      res.status(500).json({ msg: 'Error - Update User In Status Banned', error });
+      res
+        .status(500)
+        .json({ msg: 'Error - Update User In Status Banned', error });
     });
 };
 
@@ -64,7 +67,38 @@ const disableUser = (req, res) => {
   disableUserService(id)
     .then(() => res.status(201).json({ msg: 'User Updated' }))
     .catch((error) => {
-      res.status(500).json({ msg: 'Error - Update User In Status Banned', error });
+      res
+        .status(500)
+        .json({ msg: 'Error - Update User In Status Banned', error });
+    });
+};
+
+const forgotPassword = (req, res) => {
+  const { email } = req.body;
+  forgotPasswordService(email)
+    .then((token) => {
+      sendEmailRestorePassword(email, token) // revisar correctamente esta funcion
+        .then(() => {
+          res.status(200).json({ msg: 'Send Email' });
+        })
+        .catch((error) => {
+          res.status(500).json({ msg: 'Error - Send Email', error });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ msg: 'Error - Generate token', error });
+    });
+};
+
+const resetPassword = (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+  resetPasswordService(token, password)
+    .then(() => {
+      res.status(204).json({ msg: 'Rest Password Success' });
+    })
+    .catch((error) => {
+      res.send(500).json({ msg: 'Error - Reset Password', error });
     });
 };
 
@@ -75,4 +109,6 @@ module.exports = {
   getAllUsersBanned,
   updateUser,
   disableUser,
+  forgotPassword,
+  resetPassword,
 };

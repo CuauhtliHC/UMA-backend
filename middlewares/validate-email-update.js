@@ -9,4 +9,13 @@ const checkEmailExistsInOtherUser = (value, { req }) => {
   });
 };
 
-module.exports = { checkEmailExistsInOtherUser };
+const checkEmailExists = (value) => {
+  return User.findOne({ where: { email: value } }).then((user) => {
+    if (!user) {
+      const error = new Error(`El correo ${value} no existe`);
+      return Promise.reject(error);
+    }
+  });
+};
+
+module.exports = { checkEmailExistsInOtherUser, checkEmailExists };
