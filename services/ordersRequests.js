@@ -62,11 +62,12 @@ const getOrderIdRequest = async (id, res = null) => {
     });
   }
 };
-const postOrder = async (date, statusOrder, packageInfo, res) => {
+const postOrder = async (date, statusOrder, packageInfo, user, res) => {
   try {
     const newOrderCreate = await Order.create(date);
     await newOrderCreate.setInProgressOrder(statusOrder);
     await newOrderCreate.setPackage(packageInfo);
+    await newOrderCreate.setUser(user);
     const createOrder = await getOrderIdRequest(newOrderCreate.id);
     await addPackage(createOrder, res);
     res.status(201).json({

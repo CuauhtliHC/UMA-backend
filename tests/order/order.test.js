@@ -4,6 +4,7 @@ const utc = require('dayjs/plugin/utc');
 const Sequelize = require('../../database/database');
 const { server, puertoOpen } = require('../../index');
 const { Order, Package } = require('../../models');
+const { dbClose, dbConection } = require('../../database/conectBD');
 
 const { app, ordersPath, loginPath } = server;
 const api = supertest(app);
@@ -33,7 +34,12 @@ let cookieAdmin;
 let cookieUser;
 let newPackageToday;
 
+beforeAll(async () => {
+  await dbConection();
+});
+
 beforeEach(async () => {
+  await dbConection();
   await Order.sync({ force: true });
   await Package.sync({ force: true });
   initOrders.forEach(async (initOrder) => {
@@ -120,4 +126,9 @@ describe('Order - Delete', () => {
   //   console.log(order);
   //   expect(deleteando.body.deleted).toBe(true);
   // });
+});
+
+afterAll(async () => {
+  server.serverListen.close();
+  await dbClose();
 });

@@ -3,6 +3,7 @@ const Log = require('./log');
 const Order = require('./order');
 const Package = require('./package');
 const Role = require('./role');
+const SwornStatement = require('./swornStatement');
 const User = require('./user');
 
 Role.hasMany(User, { as: 'Users', foreignKey: 'roleId' });
@@ -20,8 +21,14 @@ Order.belongsTo(InProgressOrders, {
 User.hasMany(Log, { as: 'Logs', foreignKey: 'userId' });
 Log.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 
-User.belongsToMany(Order, { through: 'UsersOrders' });
-Order.belongsToMany(User, { through: 'UsersOrders' });
+User.hasMany(Order, { as: 'Orders', foreignKey: 'orderId' });
+Order.belongsTo(User, { as: 'User', foreignKey: 'userId' });
+
+User.hasMany(SwornStatement, {
+  as: 'SwornStatement',
+  foreignKey: 'swornStatementId',
+});
+SwornStatement.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 
 Package.hasMany(Order, { as: 'Order', foreignKey: 'PackageId' });
 Order.belongsTo(Package, { as: 'Package', foreignKey: 'PackageId' });

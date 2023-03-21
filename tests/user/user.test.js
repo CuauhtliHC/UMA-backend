@@ -1,4 +1,5 @@
 const supertest = require('supertest');
+const { dbClose, dbConection } = require('../../database/conectBD');
 const { server, puertoOpen } = require('../../index');
 const { User } = require('../../models');
 
@@ -22,7 +23,9 @@ const fakeUsers = [
     password: 'secreto123.',
   },
 ];
-
+beforeAll(async () => {
+  await dbConection();
+});
 beforeEach(async () => {
   await User.sync({ force: true });
   fakeUsers.forEach(async (user) => {
@@ -52,7 +55,7 @@ describe('User - Get by Id', () => {
   });
 });
 
-afterAll(() => {
-  // puertoOpen.close();
-  // Sequelize.close();
+afterAll(async () => {
+  server.serverListen.close();
+  await dbClose();
 });
