@@ -27,10 +27,11 @@ const getOrdersId = async (req = request, res = response) => {
   await getOrderIdRequest(id, res);
 };
 const postOrders = async (req = request, res = response) => {
+  const { user } = res;
   const { quantity } = req.body;
   const statusOrder = await searchStatus(status.pending);
 
-  await postOrder({ quantity }, statusOrder, req.packageInfo, res);
+  await postOrder({ quantity }, statusOrder, req.packageInfo, user, res);
 };
 
 const deletedOrders = async (req = request, res = response) => {

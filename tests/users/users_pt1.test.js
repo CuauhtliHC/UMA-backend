@@ -1,7 +1,7 @@
 const supertest = require('supertest');
 const { server } = require('../../index');
 
-const { dbClose } = require('../../database/conectBD');
+const { dbClose, dbConection } = require('../../database/conectBD');
 const { User } = require('../../models');
 const { creationUsers } = require('../../services/addDataBbDd');
 
@@ -10,8 +10,8 @@ const api = supertest(app);
 
 let cookieAdmin;
 let cookieUser;
-
 beforeAll(async () => {
+  await dbConection();
   await User.sync({ force: true });
   await creationUsers();
   const userAdmin = {
@@ -288,7 +288,7 @@ describe('PUT /disableUser/:id', () => {
   });
 });
 
-afterAll(() => {
+afterAll(async () => {
   server.serverListen.close();
-  // dbClose();
+  await dbClose();
 });

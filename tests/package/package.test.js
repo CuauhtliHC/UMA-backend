@@ -1,7 +1,7 @@
 const supertest = require('supertest');
 const dayjs = require('dayjs');
 const utc = require('dayjs/plugin/utc');
-const { dbClose } = require('../../database/conectBD');
+const { dbClose, dbConection } = require('../../database/conectBD');
 const { server } = require('../../index');
 const { Package } = require('../../models');
 const { creationUsers } = require('../../services/addDataBbDd');
@@ -52,6 +52,7 @@ const initPackages = [
 let cookieAdmin;
 let cookieUser;
 beforeAll(async () => {
+  await dbConection();
   await creationUsers();
   const userAdmin = {
     email: 'admin@admin.com',
@@ -378,7 +379,6 @@ describe('Package - Put', () => {
     });
   });
 });
-
 
 afterAll(async () => {
   server.serverListen.close();
