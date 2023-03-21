@@ -1,6 +1,6 @@
 const { check } = require('express-validator');
 const { validate } = require('../validate');
-const { checkEmailExists } = require('../users_validation_custom');
+const { checkEmailinUse } = require('../users_validation_custom');
 const { checkUserExists } = require('../update_user_validation_custom');
 
 const validateRegister = [
@@ -16,7 +16,7 @@ const validateRegister = [
     .normalizeEmail()
     .isEmail()
     .withMessage('Ingrese un correo valido')
-    .custom(checkEmailExists),
+    .custom(checkEmailinUse),
   check('password')
     .notEmpty()
     .withMessage('Ingrese datos en el campo contraseña')

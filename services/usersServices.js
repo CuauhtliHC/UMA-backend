@@ -1,5 +1,7 @@
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { Role } = require('../models');
+const RecoveryToken = require('../models/recoveryToken');
 
 const userRegisterService = async (name, email, password) => {
   const role = await Role.findOne({ where: { rol: 'USER_ROL' } });
@@ -65,6 +67,24 @@ const disableUserService = async (id) => {
   return user;
 };
 
+const forgotPasswordService = async (email) => {
+  const user = await User.findOne({ where: { email } });
+  const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+    expiresIn: '24h',
+  });
+  const recoveryToken = await RecoveryToken.create({ token });
+  await recoveryToken.setUser(user);
+  return token;
+};
+
+const resetPasswordService = async (token, password) => {
+  const recoveryToken = await RecoveryToken.findOne({ where: { token } });
+  const user = await User.findByPk(recoveryToken.userId);
+  const updatePassword = await user.update({ password: User.encriptPass(password) });
+  await recoveryToken.destroy();
+  return updatePassword;
+};
+
 module.exports = {
   userRegisterService,
   allUsersService,
@@ -72,4 +92,6 @@ module.exports = {
   usersBannedService,
   updateUserService,
   disableUserService,
+  forgotPasswordService,
+  resetPasswordService,
 };

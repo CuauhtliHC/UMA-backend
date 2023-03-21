@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const { Role } = require('../models');
 
-const checkEmailExists = (value) => {
+const checkEmailinUse = (value) => {
   return User.findOne({ where: { email: value } }).then((user) => {
     if (user) {
       const error = new Error(`El correo ${value} ya está en uso`);
@@ -20,6 +20,6 @@ const checkRolExists = (value) => {
 };
 
 module.exports = {
-  checkEmailExists,
+  checkEmailinUse,
   checkRolExists,
 };
