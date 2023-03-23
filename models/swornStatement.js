@@ -5,14 +5,18 @@ class SwornStatement extends S.Model {}
 
 SwornStatement.init(
   {
+    bodyText: {
+      type: S.STRING,
+      allowNull: null,
+    },
     aceppt: {
-      type: Boolean,
+      type: S.BOOLEAN,
       allowNull: null,
     },
   },
   {
     sequelize,
-    modelName: 'Sworn_Statements',
+    modelName: 'SwornStatement',
   },
 );
 

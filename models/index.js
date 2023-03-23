@@ -34,7 +34,7 @@ SwornStatement.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 Package.hasMany(Order, { as: 'Order', foreignKey: 'PackageId' });
 Order.belongsTo(Package, { as: 'Package', foreignKey: 'PackageId' });
 
-User.hasMany(RecoveryToken, { as: 'Logs', foreignKey: 'userId' });
+User.hasMany(RecoveryToken, { as: 'RecoveryToken', foreignKey: 'userId' });
 RecoveryToken.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 
 module.exports = {
