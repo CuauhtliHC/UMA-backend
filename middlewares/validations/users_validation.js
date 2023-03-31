@@ -13,7 +13,6 @@ const validateRegister = [
     .notEmpty()
     .withMessage('Ingrese datos en el campo email')
     .bail()
-    .normalizeEmail()
     .isEmail()
     .withMessage('Ingrese un correo valido')
     .custom(checkEmailinUse),
