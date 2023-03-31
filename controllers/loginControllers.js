@@ -13,7 +13,7 @@ exports.loginControllers = (req, res) => {
       } else {
         const isValid = user.validatePassword(password);
 
-        if (!isValid) { return res.status(400).json({ mgs: 'La contraseña es incorrecta' }); }
+        if (!isValid) { return res.status(400).json({ msg: 'La contraseña es incorrecta' }); }
 
         const payload = {
           name: user.name,

@@ -12,6 +12,8 @@ const { sendEmailRestorePassword } = require('../utils/sendEmail');
 
 const userRegister = (req, res) => {
   const { name, email, password } = req.body;
+  console.log('------------------>>>');
+  console.log(email);
   userRegisterService(name, email, password)
     .then(() => {
       res.status(201).json({ msg: 'El Usuario fue creado con éxito', email });
