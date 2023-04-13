@@ -30,8 +30,12 @@ const allUsersService = async (limit) => {
 };
 
 const userByIdService = async (id) => {
-  const user = await User.findOne({ where: { id } });
-  return user;
+  try {
+    const user = await User.findOne({ where: { id } });
+    return user;
+  } catch (error) {
+    return error;
+  }
 };
 
 const usersBannedService = async (limit) => {
@@ -80,7 +84,9 @@ const forgotPasswordService = async (email) => {
 const resetPasswordService = async (token, password) => {
   const recoveryToken = await RecoveryToken.findOne({ where: { token } });
   const user = await User.findByPk(recoveryToken.userId);
-  const updatePassword = await user.update({ password: User.encriptPass(password) });
+  const updatePassword = await user.update({
+    password: User.encriptPass(password),
+  });
   await recoveryToken.destroy();
   return updatePassword;
 };

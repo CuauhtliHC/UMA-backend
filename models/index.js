@@ -25,11 +25,11 @@ Log.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 User.hasMany(Order, { as: 'Orders', foreignKey: 'orderId' });
 Order.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 
-User.hasMany(SwornStatement, {
-  as: 'SwornStatement',
+SwornStatement.hasMany(User, { as: 'Users', foreignKey: 'roleId' });
+User.belongsTo(SwornStatement, {
+  as: 'SwornStatements',
   foreignKey: 'swornStatementId',
 });
-SwornStatement.belongsTo(User, { as: 'User', foreignKey: 'userId' });
 
 Package.hasMany(Order, { as: 'Order', foreignKey: 'PackageId' });
 Order.belongsTo(Package, { as: 'Package', foreignKey: 'PackageId' });

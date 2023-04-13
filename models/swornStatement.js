@@ -6,12 +6,16 @@ class SwornStatement extends S.Model {}
 SwornStatement.init(
   {
     bodyText: {
-      type: S.STRING,
+      type: S.TEXT,
       allowNull: null,
     },
     aceppt: {
       type: S.BOOLEAN,
       allowNull: null,
+    },
+    addDate: {
+      type: S.DATE,
+      allowNull: false,
     },
   },
   {
