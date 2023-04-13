@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const { status } = require('../config/statusOrders.json');
 const { Order, InProgressOrders, Package } = require('../models');
 const searchStatus = require('./InProgressOrdersRequests');
@@ -144,9 +145,68 @@ const getOrdersRequest = async (query, res, deleted = false) => {
   }
 };
 
+const getOrdersByDay = async (dateInicio, dateFin, deleted = false) => {
+  try {
+    const info = await Order.findAll({
+      where: { deleted },
+      include: [
+        {
+          model: InProgressOrders,
+          as: 'InProgressOrder',
+          attributes: ['status'],
+        },
+        {
+          model: Package,
+          as: 'Package',
+          where: {
+            createdAt: {
+              [Sequelize.Op.between]: [dateInicio, dateFin],
+            },
+          },
+        },
+      ],
+    });
+    const sent = await Order.findAll({
+      where: { deleted },
+      include: [
+        {
+          model: InProgressOrders,
+          as: 'InProgressOrder',
+          attributes: ['status'],
+          where: {
+            status: 'FINISHED',
+          },
+        },
+        {
+          model: Package,
+          as: 'Package',
+          where: {
+            createdAt: {
+              [Sequelize.Op.between]: [dateInicio, dateFin],
+            },
+          },
+        },
+      ],
+    });
+    const percentage = (sent.length * 100) / info.length;
+    return {
+      total: info.length,
+      totalSent: sent.length,
+      percentage,
+    };
+  } catch (error) {
+    return {
+      msg: 'Error Get Order',
+      location: 'services/ordersRequests.js/getOrdersByDay()',
+      error,
+    };
+  }
+};
+
 module.exports = {
   getOrdersRequest,
   getOrderIdRequest,
+  getOrdersByDay,
   postOrder,
   deleteOrderRequest,
   canceladoOrder,

@@ -6,6 +6,7 @@ const {
   putPackage,
   deletePackage,
   getPackageId,
+  getDescriptionPackageByDay,
 } = require('../controllers/packageControllers');
 const {
   validationsId,
@@ -22,6 +23,7 @@ const route = Router();
 
 route.get('/', validateAdmin, getPackageAll);
 route.get('/today', getPackageToday);
+route.get('/descriptionDay/:day', getDescriptionPackageByDay);
 route.get('/:id', validationsId, getPackageId);
 route.post('/', validationsPostPakage, postPackage);
 route.put('/:id', validationsPutPakage, putPackage);

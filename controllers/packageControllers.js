@@ -9,6 +9,9 @@ const {
   postPackagesFromDb,
   putPackagesFromDb,
 } = require('../services/packageRequests');
+const {
+  getOrdersByDay,
+} = require('../services/ordersRequests');
 
 dayjs.extend(utc);
 
@@ -39,6 +42,32 @@ const getPackageToday = async (req = request, res = response) => {
       msg: 'All Package',
       total: datePackageToday.length,
       datePackageToday,
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: 'Error - All Package',
+      error,
+    });
+  }
+};
+
+const getDescriptionPackageByDay = async (req = request, res = response) => {
+  const { day } = req.params;
+  const dateInicio = dayjs(day).startOf('day').toDate();
+  const dateFin = dayjs(day).endOf('day').toDate();
+  try {
+    const datePackageToday = await getAllPackagesTodayFromDb(
+      dateInicio,
+      dateFin,
+    );
+    const orders = await getOrdersByDay(
+      dateInicio,
+      dateFin,
+    );
+    res.status(200).json({
+      msg: 'All Package',
+      total: datePackageToday.length,
+      orders,
     });
   } catch (error) {
     res.status(500).json({
@@ -121,6 +150,7 @@ const deletePackage = async (req = request, res = response) => {
 module.exports = {
   getPackageAll,
   getPackageToday,
+  getDescriptionPackageByDay,
   getPackageId,
   postPackage,
   putPackage,
