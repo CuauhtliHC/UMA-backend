@@ -32,9 +32,9 @@ exports.loginControllers = (req, res) => {
             date: user.SwornStatements.dataValues.addDate,
           };
         }
-        console.log(payload);
         const token = generateToken(payload);
         res.cookie('token', token);
+        payload.token = token;
 
         res.status(200).json({
           msg: 'Login - User',

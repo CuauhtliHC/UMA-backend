@@ -5,7 +5,7 @@ const { userByIdService } = require('../services/usersServices');
 
 function validateAuth(req, res, next) {
   const { token } = req.cookies;
-  if (!token) return res.sendStatus(401);
+  if (!token) return res.status(401).send('sarasa');
 
   const { user } = validateToken(token);
   if (!user) return res.sendStatus(401);
