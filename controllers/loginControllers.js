@@ -7,20 +7,32 @@ exports.loginControllers = (req, res) => {
   User.findOne({ where: { email }, include: { all: true } })
     .then((user) => {
       if (!user) {
-        res
-          .status(404)
-          .json({ msg: `El correo electrónico ${email} no pertenece a ningun usuario` });
+        res.status(404).json({
+          msg: `El correo electrónico ${email} no pertenece a ningun usuario`,
+        });
       } else {
         const isValid = user.validatePassword(password);
 
-        if (!isValid) { return res.status(400).json({ msg: 'La contraseña es incorrecta' }); }
-
+        if (!isValid) {
+          return res.status(400).json({ msg: 'La contraseña es incorrecta' });
+        }
         const payload = {
+          id: user.id,
           name: user.name,
           email: user.email,
           rol: user.Role.rol,
+          ddjj: {
+            status: false,
+            date: null,
+          },
         };
-
+        if (user.swornStatementId) {
+          payload.ddjj = {
+            status: user.SwornStatements.dataValues.aceppt,
+            date: user.SwornStatements.dataValues.addDate,
+          };
+        }
+        console.log(payload);
         const token = generateToken(payload);
         res.cookie('token', token);
 

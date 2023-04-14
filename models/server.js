@@ -12,6 +12,7 @@ class Server {
     this.loginPath = '/api/login';
     this.ordersPath = '/api/orders';
     this.logoutPath = '/api/logout';
+    this.swornStatementPath = '/api/swornStatement';
     this.conectarDB(); // conecta a la base de datos
     this.middLewares(); // controla antes de la llegada al servidor
 
@@ -41,6 +42,7 @@ class Server {
     this.app.use(this.loginPath, require('../routes/login'));
     this.app.use(this.ordersPath, require('../routes/orders'));
     this.app.use(this.logoutPath, require('../routes/logout'));
+    this.app.use(this.swornStatementPath, require('../routes/swornStatement'));
   }
 
   listen() {
