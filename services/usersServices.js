@@ -31,7 +31,7 @@ const allUsersService = async (limit) => {
 
 const userByIdService = async (id) => {
   try {
-    const user = await User.findOne({ where: { id } });
+    const user = await User.findOne({ where: { id }, include: { all: true } });
     return user;
   } catch (error) {
     return error;

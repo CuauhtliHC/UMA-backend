@@ -1,11 +1,10 @@
 const SwornStatement = require('../models/swornStatement');
-const { userByIdService } = require('./usersServices');
 
 const postswornStarementFromDb = async (data, user, res) => {
   try {
     const dateSwornStatement = await SwornStatement.create(data);
-    const userFind = await userByIdService(user.id);
-    await userFind.setSwornStatements(dateSwornStatement);
+    console.log(user);
+    await user.setSwornStatements(dateSwornStatement);
     res.status(201).json({
       msg: 'SwornStatement Created',
       dateSwornStatement,

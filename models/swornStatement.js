@@ -13,10 +13,6 @@ SwornStatement.init(
       type: S.BOOLEAN,
       allowNull: null,
     },
-    addDate: {
-      type: S.DATE,
-      allowNull: false,
-    },
   },
   {
     sequelize,

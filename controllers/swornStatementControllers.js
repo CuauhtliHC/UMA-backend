@@ -1,6 +1,4 @@
 const { request, response } = require('express');
-const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
 const createrTextSwornStatement = require('../helpers/createrTextswornStatement');
 const {
   postswornStarementFromDb,
@@ -16,7 +14,6 @@ const swornStatementPost = async (req = request, res = response) => {
   );
   const dateSwornSrarement = {
     bodyText: textSwornStatement,
-    addDate: dayjs().format('YYYY-MM-DD'),
   };
   if (firstAnswer || secondAnswer || thirdAnswer) {
     dateSwornSrarement.aceppt = false;
