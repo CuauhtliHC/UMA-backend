@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { Sequelize } = require('sequelize');
 const User = require('../models/user');
 const { Role } = require('../models');
 const RecoveryToken = require('../models/recoveryToken');
@@ -22,7 +23,7 @@ const allUsersService = async (limit) => {
   const users = await User.findAndCountAll({
     limit,
     offset: 0,
-    where: { deleted: false },
+    where: { deleted: false, roleId: { [Sequelize.Op.ne]: 1 } },
     attributes: ['id', 'name', 'email', 'active', 'deleted', 'roleId'],
     order: [['id', 'ASC']],
   });
