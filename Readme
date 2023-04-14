@@ -43,37 +43,172 @@ GitFlow Las ramas establecidas son:
 
 -BugFix: Ramas para correciones de  errores críticos en la versión publicada en la rama develop, que luego se integran en la rama master y develop.
 
-                                                                        A TRABAJAR!!!
+-------------------------------------------------------------------------------------
 
-                                                            ______________$$$$$$$$$$____________________
-                                                            _____________$$__$_____$$$$$________________
-                                                            _____________$$_$$__$$____$$$$$$$$__________
-                                                            ____________$$_$$__$$$$$________$$$_________
-                                                            ___________$$_$$__$$__$$_$$$__$$__$$________
-                                                            ___________$$_$$__$__$$__$$$$$$$$__$$_______
-                                                            ____________$$$$$_$$_$$$_$$$$$$$$_$$$_______
-                                                            _____________$$$$$$$$$$$$$_$$___$_$$$$______
-                                                            ________________$$_$$$______$$$$$_$$$$______
-                                                            _________________$$$$_______$$$$$___$$$_____
-                                                            ___________________________$$_$$____$$$$____
-                                                            ___________________________$$_$$____$$$$$___
-                                                            __________________________$$$$$_____$$$$$$__
-                                                            _________________________$__$$_______$$$$$__
-                                                            ________________________$$$_$$________$$$$$_
-                                                            ________________________$$$___________$$$$$_
-                                                            _________________$$$$___$$____________$$$$$$
-                                                            __$$$$$$$$____$$$$$$$$$$_$____________$$$_$$
-                                                            _$$$$$$$$$$$$$$$______$$$$$$$___$$____$$_$$$
-                                                            $$________$$$$__________$_$$$___$$$_____$$$$
-                                                            $$______$$$_____________$$$$$$$$$$$$$$$$$_$$
-                                                            $$______$$_______________$$_$$$$$$$$$$$$$$$_
-                                                            $$_____$_$$$$$__________$$$_$$$$$$$$$$$$$$$_
-                                                            $$___$$$__$$$$$$$$$$$$$$$$$__$$$$$$$$$$$$$__
-                                                            $$_$$$$_____$$$$$$$$$$$$________$$$$$$__$___
-                                                            $$$$$$$$$$$$$$_________$$$$$______$$$$$$$___
-                                                            $$$$_$$$$$______________$$$$$$$$$$$$$$$$____
-                                                            $$__$$$$_____$$___________$$$$$$$$$$$$$_____
-                                                            $$_$$$$$$$$$$$$____________$$$$$$$$$$_______
-                                                            $$_$$$$$$$hg$$$____$$$$$$$$__$$$____________
-                                                            $$$$__$$$$$$$$$$$$$$$$$$$$$$$$______________
-                                                            $$_________$$$$$$$$$$$$$$$__________________
+Endpoint:
+
+LOGIN
+**/api/login**
+
+Método: Post
+Parámetros del Body: email, password 
+
+Errores: 
+    • 404 / mensaje: “El correo electrónico ${email} no pertenece a ningún usuario”
+    • 400 / mensaje: “La contraseña es incorrecta”
+    • 500 / Mensaje: “Error – Login”
+
+Respuesta: 
+msg: 'Login - User',
+payload {
+	id: 3,
+	name:Juan Perez,
+	email: perez@mail.com,
+	rol: USER_ROL, 
+	ddjj: {
+		status: false,
+		date: null,
+		},
+    token: adeijoigf58tu59f,
+	}
+   
+   
+REGISTER
+**/api/users/register**
+
+Método: Post
+Parámetros del Body:  email, password, name
+
+Errores: 
+    • 500 / Mensaje: 'Error - Register'
+
+Respuesta: 
+msg: 'El Usuario fue creado con éxito', juan@mail.com 
+
+GET ALL USERS
+**/api/users/getAllUsers/:limit**
+
+Método: GET
+Parámetros del Request: limit
+
+Errores: 
+    • 500 / Mensaje: 'Error - Get All Users'
+  
+
+Respuesta: 
+users
+
+GET USER BY ID
+**/api/users/getUserById/:id**
+
+Método: GET
+Parámetros del Request: id
+
+Errores: 
+    • 500 / Mensaje: 'Error - Get User By Id'
+  
+
+Respuesta: 
+user
+
+
+GET ALL USERS BANNED
+ **/api/users/getAllUsersBanned/:limit*
+
+Método: GET
+Parámetros del Request: limit
+
+Errores: 
+    • 500 / Mensaje: 'Error - Get All Users Banned'
+  
+
+Respuesta: 
+users
+
+
+UPDATE USER BY ID
+ **/api/users/updateUser/:id*
+
+Método: PUT
+Parámetros del body: email, name, password, status,
+Parámetros del req: id
+
+Errores: 
+    • 500 / Mensaje: 'Error - Update User In Status Banned'
+  
+Respuesta: 
+user
+
+UPDATE USER BY ID
+ **/api/users/updateUser/:id*
+
+Método: PUT
+Parámetros del body: email, name, password, status,
+Parámetros del req: id
+
+Errores: 
+    • 500 / Mensaje: 'Error - Update User In Status Banned'
+  
+Respuesta: 
+user
+
+
+DISABLE USER BY ID
+(Pasar a un usuario a inactivo)
+ **/api/users/disableUser/:id*
+
+Método: PUT
+Parámetros del req: id
+
+Errores: 
+    • 500 / Mensaje: 'Error - Update User In Status Banned'
+  
+Respuesta: 
+user
+
+
+FORGOT PASSWORD
+(Olvidó contraseña, envía un email con un token para crear una nueva contraseña)
+ **/api/users/forgotPassword*
+
+Método: PUT
+Parámetros del body: email
+
+Errores: 
+    • 500 / Mensaje: 'Error - Send Email'
+    • 500 / Mensaje: 'Error - Generate Token'
+  
+Respuesta: 
+    200 / Envía un email
+    
+    
+RESET PASSWORD
+(Recuperar contraseña mediante un token, obtiene el usuario y le actualiza por la nueva contraseña)
+ **/api/users/reset-password/:token*
+
+Método: GET
+Parámetros del req: token
+Parámetros del body: password
+
+Errores: 
+    • 500 / Mensaje: 'Error - Send Email'
+    • 500 / Mensaje: 'Error - Reset Password'
+  
+Respuesta: 
+    204 / Rest Password Success
+    
+    
+GET ALL ORDERS
+(Trae todas las órdenes)
+ **/api/orders/*
+
+Método: GET
+Parámetros del query: statusOrder, idPackage
+
+Errores: 
+    • 500 / Mensaje: ''Error Get Order''
+  
+Respuesta: 
+   msg: 'Get Orders',
+      total: info.length,
+      info,
