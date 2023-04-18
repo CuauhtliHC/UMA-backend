@@ -26,7 +26,12 @@ class Server {
   // middlewares
   middLewares() {
     // cors
-    this.app.use(cors()); // da acceso a todos los dominios
+    this.app.use(
+      cors({
+        origin: 'http://localhost:3000',
+        credentials: true,
+      }),
+    ); // da acceso a todos los dominios
 
     // directorio publico
     // this.app.use(express.static('public'));
