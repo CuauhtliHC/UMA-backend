@@ -25,7 +25,7 @@ route.get('/', validateAdmin, getPackageAll);
 route.get('/today', getPackageToday);
 route.get('/descriptionDay/:day', getDescriptionPackageByDay);
 route.get('/:id', validationsId, getPackageId);
-route.post('/', validationsPostPakage, postPackage);
+route.post('/create', validationsPostPakage, postPackage);
 route.put('/:id', validationsPutPakage, putPackage);
 route.delete('/:id', validationDeletedPakage, deletePackage);
 
