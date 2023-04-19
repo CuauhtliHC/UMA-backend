@@ -1,3 +1,4 @@
+const dayjs = require('dayjs');
 const User = require('../models/user');
 const { generateToken } = require('../config/tokens');
 
@@ -26,10 +27,14 @@ exports.loginControllers = (req, res) => {
             date: null,
           },
         };
+        const date = dayjs(user.SwornStatements.dataValues.createdAt).format(
+          'YYYY-MM-DD',
+        );
+
         if (user.swornStatementId) {
           payload.ddjj = {
             status: user.SwornStatements.dataValues.aceppt,
-            date: user.SwornStatements.dataValues.addDate,
+            date,
           };
         }
         console.log(payload);
