@@ -27,14 +27,14 @@ exports.loginControllers = (req, res) => {
             date: null,
           },
         };
-        const date = dayjs(user.SwornStatements.dataValues.createdAt).format(
-          'YYYY-MM-DD',
-        );
 
         if (user.swornStatementId) {
+          const date = dayjs(user.SwornStatements.dataValues.createdAt).format(
+            'YYYY-MM-DD',
+          );
           payload.ddjj = {
             status: user.SwornStatements.dataValues.aceppt,
-            date,
+            date: date || null,
           };
         }
         console.log(payload);
