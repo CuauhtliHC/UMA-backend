@@ -3,11 +3,18 @@ const { Sequelize } = require('sequelize');
 const User = require('../models/user');
 const { Role } = require('../models');
 const RecoveryToken = require('../models/recoveryToken');
+const StatusUsers = require('../models/statusUser');
+const { statusUser } = require('../config/statusUsers.json');
 
 const userRegisterService = async (name, email, password) => {
   const role = await Role.findOne({ where: { rol: 'USER_ROL' } });
   if (!role) {
     const error = new Error('No fue encontrado el rol en la BBDD');
+    return error;
+  }
+  const userStatus = await StatusUsers.findOne({ where: { status: statusUser.inavtive } });
+  if (!userStatus) {
+    const error = new Error('No fue encontrado el userStatus en la BBDD');
     return error;
   }
   const user = await User.create({
@@ -16,6 +23,7 @@ const userRegisterService = async (name, email, password) => {
     password: User.encriptPass(password),
   });
   user.setRole(role);
+  user.setUserStatus(userStatus);
   return user;
 };
 

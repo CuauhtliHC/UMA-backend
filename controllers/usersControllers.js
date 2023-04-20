@@ -1,3 +1,4 @@
+const searchStatusUser = require('../services/statusUsersRequests');
 const {
   userRegisterService,
   allUsersService,
@@ -74,6 +75,28 @@ const disableUser = (req, res) => {
         .json({ msg: 'Error - Update User In Status Banned', error });
     });
 };
+const changeStatus = async (req, res) => {
+  const { path } = req;
+  const userLogin = res.user;
+  const user = await userByIdService(userLogin.id);
+  const status = path.slice(1);
+  const userStatus = await searchStatusUser(status);
+  console.log(userStatus);
+  await user.setStatusUsers(userStatus);
+  const userUpdate = await userByIdService(userLogin.id);
+
+  res.status(200).json({
+    msg: `Cambio de estado del usuario a ${status}`,
+    userUpdate,
+  });
+  // disableUserService(id)
+  //   .then(() => res.status(201).json({ msg: 'User Updated' }))
+  //   .catch((error) => {
+  //     res
+  //       .status(500)
+  //       .json({ msg: 'Error - Update User In Status Banned', error });
+  //   });
+};
 
 const forgotPassword = (req, res) => {
   const { email } = req.body;
@@ -113,4 +136,5 @@ module.exports = {
   disableUser,
   forgotPassword,
   resetPassword,
+  changeStatus,
 };
