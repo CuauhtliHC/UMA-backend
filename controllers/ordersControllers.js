@@ -1,5 +1,6 @@
 const { request, response } = require('express');
 const { status } = require('../config/statusOrders.json');
+const { statusUser } = require('../config/statusUsers.json');
 const searchStatus = require('../services/InProgressOrdersRequests');
 const {
   postOrder,
@@ -8,6 +9,7 @@ const {
   getOrderIdRequest,
   canceladoOrder,
 } = require('../services/ordersRequests');
+const searchStatusUser = require('../services/statusUsersRequests');
 
 const getOrders = async (req = request, res = response) => {
   const { statusOrder, idPackage } = req.query;
@@ -30,6 +32,8 @@ const postOrders = async (req = request, res = response) => {
   const { user } = res;
   const { quantity } = req.body;
   const statusOrder = await searchStatus(status.pending);
+  const statusUserInProgress = await searchStatusUser(statusUser.inProgress);
+  await user.setStatusUsers(statusUserInProgress);
 
   await postOrder({ quantity }, statusOrder, req.packageInfo, user, res);
 };

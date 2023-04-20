@@ -1,0 +1,6 @@
+{
+    "statusUser": {
+    "inProgress": "IN_PROGRESS",
+    "finished": "FINISHED",
+    "inavtive": "INACTIVE"}
+}

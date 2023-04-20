@@ -10,6 +10,7 @@ const {
   updateUser,
   forgotPassword,
   resetPassword,
+  changeStatus,
 } = require('../controllers/usersControllers');
 const { validateControllers } = require('../controllers/validateControllers');
 const {
@@ -30,6 +31,8 @@ router.get('/getUserById/:id', validateCheckUserIdExists, getUserById);
 router.get('/getAllUsersBanned/:limit', validateAdmin, validateLimit, getAllUsersBanned);
 router.put('/updateUser/:id', validateCheckUserIdExists, validateUpdate, updateUser);
 router.put('/disableUser/:id', validateAdmin, validateCheckUserIdExists, disableUser);
+router.put('/finished', validateAuth, changeStatus);
+router.put('/inavtive', validateAuth, changeStatus);
 router.put('/forgotPassword', validateCheckEmail, forgotPassword);
 router.get('/reset-password/:token', validateTokenRestorePassword, resetPassword);
 

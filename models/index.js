@@ -4,11 +4,15 @@ const Order = require('./order');
 const Package = require('./package');
 const RecoveryToken = require('./recoveryToken');
 const Role = require('./role');
+const StatusUsers = require('./statusUser');
 const SwornStatement = require('./swornStatement');
 const User = require('./user');
 
 Role.hasMany(User, { as: 'Users', foreignKey: 'roleId' });
 User.belongsTo(Role, { as: 'Role', foreignKey: 'roleId' });
+
+StatusUsers.hasMany(User, { as: 'Users', foreignKey: 'StatusUserId' });
+User.belongsTo(StatusUsers, { as: 'StatusUsers', foreignKey: 'StatusUserId' });
 
 InProgressOrders.hasMany(Order, {
   as: 'Order',
@@ -44,4 +48,5 @@ module.exports = {
   Log,
   Package,
   InProgressOrders,
+  StatusUsers,
 };

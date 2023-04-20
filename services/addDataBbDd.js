@@ -1,5 +1,7 @@
 const { dbConection, dbClose } = require('../database/conectBD');
-const { Role, InProgressOrders, User } = require('../models');
+const {
+  Role, InProgressOrders, User, StatusUsers,
+} = require('../models');
 
 const creationRolesRequired = async () => {
   await Role.findOrCreate({ where: { rol: 'ADMIN_ROL' } });
@@ -13,6 +15,12 @@ const creationStatusOrdersRequired = async () => {
   await InProgressOrders.findOrCreate({ where: { status: 'FINISHED' } });
   await InProgressOrders.findOrCreate({ where: { status: 'CANCELLED' } });
   console.log('Estados de orders creados');
+};
+const creationStatusUsersRequired = async () => {
+  await StatusUsers.findOrCreate({ where: { status: 'FINISHED' } });
+  await StatusUsers.findOrCreate({ where: { status: 'IN_PROGRESS' } });
+  await StatusUsers.findOrCreate({ where: { status: 'INACTIVE' } });
+  console.log('Estados de usuarios creados');
 };
 
 const creationUserAdmin = async () => {
@@ -37,8 +45,11 @@ const creationUserAdmin = async () => {
 };
 
 const creationUser = async () => {
-  const [role, created] = await Role.findOrCreate({
+  const [role, createdRole] = await Role.findOrCreate({
     where: { rol: 'USER_ROL' },
+  });
+  const [userStatus, createdUserStatus] = await StatusUsers.findOrCreate({
+    where: { status: 'INACTIVE' },
   });
   const [user, userCreated] = await User.findOrCreate({
     where: {
@@ -50,10 +61,15 @@ const creationUser = async () => {
     },
   });
   const existingRole = await user.getRole();
+  const existingUserStatus = await user.getStatusUsers();
 
   if (existingRole === null || existingRole !== 1) {
     await user.setRole(role);
   }
+  if (existingUserStatus === null) {
+    await user.setStatusUsers(userStatus);
+  }
+
   console.log('User');
 };
 
@@ -64,6 +80,7 @@ const creationUsers = async () => {
 
 const addDataBbDd = async () => {
   await dbConection();
+  await creationStatusUsersRequired();
   await creationRolesRequired();
   await creationStatusOrdersRequired();
   await creationUserAdmin();
