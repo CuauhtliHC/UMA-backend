@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { Sequelize } = require('sequelize');
 const User = require('../models/user');
-const {
-  Role,
-} = require('../models');
+const { Role } = require('../models');
 const RecoveryToken = require('../models/recoveryToken');
 const StatusUsers = require('../models/statusUser');
 const { statusUser } = require('../config/statusUsers.json');
@@ -14,7 +12,9 @@ const userRegisterService = async (name, email, password) => {
     const error = new Error('No fue encontrado el rol en la BBDD');
     return error;
   }
-  const userStatus = await StatusUsers.findOne({ where: { status: statusUser.inavtive } });
+  const userStatus = await StatusUsers.findOne({
+    where: { status: statusUser.inavtive },
+  });
   if (!userStatus) {
     const error = new Error('No fue encontrado el userStatus en la BBDD');
     return error;
@@ -34,7 +34,15 @@ const allUsersService = async (limit) => {
     limit,
     offset: 0,
     where: { deleted: false, roleId: { [Sequelize.Op.ne]: 1 } },
-    attributes: ['id', 'name', 'email', 'active', 'deleted', 'roleId'],
+    attributes: [
+      'id',
+      'name',
+      'email',
+      'active',
+      'deleted',
+      'roleId',
+      'StatusUserId',
+    ],
     order: [['id', 'ASC']],
     include: [
       {
@@ -117,6 +125,20 @@ const resetPasswordService = async (token, password) => {
   return updatePassword;
 };
 
+const totalUserAFService = async () => {
+  const userActives = await User.count({
+    where: {
+      StatusUserId: 2,
+      deleted: false,
+      roleId: { [Sequelize.Op.ne]: 1 },
+    },
+  });
+  const userTotal = await User.count({
+    where: { deleted: false, roleId: { [Sequelize.Op.ne]: 1 } },
+  });
+  return { userActives, userTotal };
+};
+
 module.exports = {
   userRegisterService,
   allUsersService,
@@ -126,4 +148,5 @@ module.exports = {
   disableUserService,
   forgotPasswordService,
   resetPasswordService,
+  totalUserAFService,
 };
