@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 const { Sequelize } = require('sequelize');
 const User = require('../models/user');
-const { Role } = require('../models');
+const {
+  Role,
+} = require('../models');
 const RecoveryToken = require('../models/recoveryToken');
 
 const userRegisterService = async (name, email, password) => {
@@ -26,13 +28,28 @@ const allUsersService = async (limit) => {
     where: { deleted: false, roleId: { [Sequelize.Op.ne]: 1 } },
     attributes: ['id', 'name', 'email', 'active', 'deleted', 'roleId'],
     order: [['id', 'ASC']],
+    include: [
+      {
+        all: true,
+        nested: true,
+      },
+    ],
   });
   return users;
 };
 
 const userByIdService = async (id) => {
   try {
-    const user = await User.findOne({ where: { id }, include: { all: true } });
+    const user = await User.findOne({
+      where: { id },
+      attributes: ['id', 'name', 'email', 'active', 'deleted', 'roleId'],
+      include: [
+        {
+          all: true,
+          nested: true,
+        },
+      ],
+    });
     return user;
   } catch (error) {
     return error;

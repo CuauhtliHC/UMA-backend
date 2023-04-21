@@ -194,7 +194,7 @@ const getOrdersByDay = async (dateInicio, dateFin, deleted = false) => {
     return {
       total: info.length,
       totalSent: sent.length,
-      percentage,
+      percentage: percentage || 0,
     };
   } catch (error) {
     return {

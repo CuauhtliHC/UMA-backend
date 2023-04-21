@@ -26,7 +26,27 @@ const userRegister = (req, res) => {
 const getAllUsers = (req, res) => {
   const { limit } = req.params;
   allUsersService(limit)
-    .then((users) => res.status(200).json(users))
+    .then(({ rows, count }) => {
+      const dataUser = rows.map(
+        ({
+          id, name, email, active, deleted, roleId, Orders, Logs, Role,
+        }) => {
+          return {
+            id,
+            name,
+            email,
+            active,
+            deleted,
+            roleId,
+            Orders,
+            percentage: Orders.length === 0 ? 0 : 1,
+            Logs,
+            Role,
+          };
+        },
+      );
+      res.status(200).json({ count, rows: dataUser });
+    })
     .catch((error) => {
       res.status(500).json({ msg: 'Error - Get All Users', error });
     });
@@ -35,7 +55,21 @@ const getAllUsers = (req, res) => {
 const getUserById = (req, res) => {
   const { id } = req.params;
   userByIdService(id)
-    .then((user) => res.status(200).json({ user }))
+    .then(({
+      Logs, Orders, Role, active, deleted, email, name, roleId,
+    }) => {
+      res.status(200).json({
+        id,
+        Logs,
+        Orders,
+        Role,
+        active,
+        deleted,
+        email,
+        name,
+        roleId,
+      });
+    })
     .catch((error) => {
       res.status(500).json({ msg: 'Error - Get User By Id', error });
     });
