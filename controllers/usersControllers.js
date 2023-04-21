@@ -8,6 +8,7 @@ const {
   updateUserService,
   forgotPasswordService,
   resetPasswordService,
+  totalUserAFService,
 } = require('../services/usersServices');
 const { sendEmailRestorePassword } = require('../utils/sendEmail');
 
@@ -30,7 +31,7 @@ const getAllUsers = (req, res) => {
     .then(({ rows, count }) => {
       const dataUser = rows.map(
         ({
-          id, name, email, active, deleted, roleId, Orders, Logs, Role,
+          id, name, email, active, deleted, roleId, Orders, Logs, Role, StatusUserId,
         }) => {
           return {
             id,
@@ -42,6 +43,7 @@ const getAllUsers = (req, res) => {
             Orders,
             percentage: Orders.length === 0 ? 0 : 1,
             Logs,
+            StatusUserId,
             Role,
           };
         },
@@ -161,6 +163,15 @@ const resetPassword = (req, res) => {
     });
 };
 
+const getTotalUserAF = (req, res) => {
+  totalUserAFService().then(({ userActives, userTotal }) => {
+    const percentage = (userActives * 100) / userTotal;
+    res.status(200).json({ userActives, userTotal, percentage });
+  }).catch((error) => {
+    res.send(500).json({ msg: 'Error - Get total user Actives', error });
+  });
+};
+
 module.exports = {
   userRegister,
   getAllUsers,
@@ -171,4 +182,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   changeStatus,
+  getTotalUserAF,
 };

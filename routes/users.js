@@ -11,6 +11,7 @@ const {
   forgotPassword,
   resetPassword,
   changeStatus,
+  getTotalUserAF,
 } = require('../controllers/usersControllers');
 const { validateControllers } = require('../controllers/validateControllers');
 const {
@@ -35,5 +36,6 @@ router.put('/finished', validateAuth, changeStatus);
 router.put('/inavtive', validateAuth, changeStatus);
 router.put('/forgotPassword', validateCheckEmail, forgotPassword);
 router.get('/reset-password/:token', validateTokenRestorePassword, resetPassword);
+router.get('/getUsersActivesInactives', validateAdmin, getTotalUserAF);
 
 module.exports = router;
