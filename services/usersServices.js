@@ -25,7 +25,7 @@ const userRegisterService = async (name, email, password) => {
     password: User.encriptPass(password),
   });
   user.setRole(role);
-  user.setUserStatus(userStatus);
+  user.setStatusUsers(userStatus);
   return user;
 };
 
