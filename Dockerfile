@@ -29,4 +29,4 @@ RUN npm install
 COPY . .
 
 # Start PostgreSQL and the application
-CMD ["/etc/init.d/postgresql", "start", "&&", 'npm', 'run', 'bbdd', '&&', "npm", "start"]
+CMD ["npm", "start"]
