@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as the base image
-FROM node:18
+FROM node:18-alpine
 
 # Install PostgreSQL
 RUN apk update && \
