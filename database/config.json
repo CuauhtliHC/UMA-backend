@@ -1,9 +1,0 @@
-{
-    "options": {
-      "dialect": "postgres",
-      "host": "18.221.235.5",
-      "port": 5432,
-      "logging": false
-    }
-  }
-  
