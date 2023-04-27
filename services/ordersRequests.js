@@ -71,16 +71,16 @@ const postOrder = async (date, statusOrder, packageInfo, user, res) => {
     await newOrderCreate.setUser(user);
     const createOrder = await getOrderIdRequest(newOrderCreate.id);
     await addPackage(createOrder, res);
-    res.status(201).json({
-      msg: 'Creation - Order',
-      createOrder,
-    });
+    // res.status(201).json({
+    //   msg: 'Creation - Order',
+    //   createOrder,
+    // });
   } catch (error) {
-    res.status(500).json({
-      msg: 'Error Post Order',
-      location: 'services/ordersRequests.js/postOrder()',
-      error,
-    });
+    // res.status(500).json({
+    //   msg: 'Error Post Order',
+    //   location: 'services/ordersRequests.js/postOrder()',
+    //   error,
+    // });
   }
 };
 
