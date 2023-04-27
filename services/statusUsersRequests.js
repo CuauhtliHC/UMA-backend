@@ -4,11 +4,16 @@ const { statusUser } = require('../config/statusUsers.json');
 
 const searchStatusUser = async (status) => {
   try {
-    console.log(status);
-    console.log(statusUser[status]);
-    const statusOrder = await StatusUsers.findOne({
-      where: { status: statusUser[status] },
-    });
+    let statusOrder;
+    if (statusUser[status]) {
+      statusOrder = await StatusUsers.findOne({
+        where: { status: statusUser[status] },
+      });
+    } else {
+      statusOrder = await StatusUsers.findOne({
+        where: { status },
+      });
+    }
     return statusOrder;
   } catch (error) {
     response.status(404).json({

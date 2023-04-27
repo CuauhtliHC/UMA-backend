@@ -9,9 +9,8 @@ const {
   postPackagesFromDb,
   putPackagesFromDb,
 } = require('../services/packageRequests');
-const {
-  getOrdersByDay,
-} = require('../services/ordersRequests');
+const { getOrdersByDay } = require('../services/ordersRequests');
+const { addingDiffQuantity } = require('../utils/quantityPackageOrder');
 
 dayjs.extend(utc);
 
@@ -38,10 +37,11 @@ const getPackageToday = async (req = request, res = response) => {
       dateInicio,
       dateFin,
     );
+    const newArrayPackage = addingDiffQuantity(datePackageToday);
     res.status(200).json({
       msg: 'All Package',
-      total: datePackageToday.length,
-      datePackageToday,
+      total: newArrayPackage.length,
+      datePackageToday: newArrayPackage,
     });
   } catch (error) {
     res.status(500).json({
@@ -60,10 +60,7 @@ const getDescriptionPackageByDay = async (req = request, res = response) => {
       dateInicio,
       dateFin,
     );
-    const orders = await getOrdersByDay(
-      dateInicio,
-      dateFin,
-    );
+    const orders = await getOrdersByDay(dateInicio, dateFin);
     res.status(200).json({
       msg: 'All Package',
       total: datePackageToday.length,
