@@ -3,7 +3,6 @@ const { status } = require('../config/statusOrders.json');
 const { Order, InProgressOrders, Package } = require('../models');
 const searchStatus = require('./InProgressOrdersRequests');
 const { putPackagesFromDb } = require('./packageRequests');
-const { userByIdService } = require('./usersServices');
 
 const restPackage = async (orderPackage, res) => {
   const data = {
@@ -69,8 +68,7 @@ const postOrder = async (date, statusOrder, packageInfo, user, res) => {
     const newOrderCreate = await Order.create(date);
     await newOrderCreate.setInProgressOrder(statusOrder);
     await newOrderCreate.setPackage(packageInfo);
-    const userFind = await userByIdService(user.id);
-    await newOrderCreate.setUser(userFind);
+    await newOrderCreate.setUser(user);
     const createOrder = await getOrderIdRequest(newOrderCreate.id);
     await addPackage(createOrder, res);
     res.status(201).json({

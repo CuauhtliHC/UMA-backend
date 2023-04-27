@@ -6,19 +6,20 @@ const { getOrderIdRequest } = require('../services/ordersRequests');
 const { getIdPackagesFromDb } = require('../services/packageRequests');
 
 const req = request;
+const arrayPkg = [];
 
-const validatePackageId = async (packageId) => {
-  const packageInfo = await getIdPackagesFromDb(packageId);
+const validatePackageId = async (pkg) => {
+  const packageInfo = await getIdPackagesFromDb(pkg.id);
   const date = dayjs().format('YYYY-MM-DD');
   const packageDate = dayjs(packageInfo.dateOfDelivery).format('YYYY-MM-DD');
   if (!packageInfo) {
-    throw new Error('This package does not exist');
+    throw new Error(`This package with id ${pkg.id} does not exist`);
   } else if (date !== packageDate) {
     throw new Error(
-      `The package is not dated today. Package date ${packageDate}`,
+      `The package with id ${pkg.id} is not dated today. Package date ${packageDate}`,
     );
   }
-  req.packageInfo = packageInfo;
+  arrayPkg.push(packageInfo);
 };
 
 const validateOrderId = async (id) => {
@@ -51,8 +52,8 @@ const validateInProgres = async (statusOrder) => {
   return true;
 };
 
-const validateQuantity = (quantity) => {
-  const { packageInfo } = req;
+const validateQuantity = (pkg) => {
+  const { packageInfo, quantity } = pkg;
   if (!packageInfo) {
     return true;
   }
@@ -61,7 +62,7 @@ const validateQuantity = (quantity) => {
       > packageInfo.quantityOfPackages
     && packageInfo
   ) {
-    throw new Error('more are being added to the existing ones');
+    throw new Error(`Adding ${quantity} more products to package with id ${packageInfo.id} would exceed its quantity limit`);
   }
   return true;
 };
@@ -73,10 +74,25 @@ const validationStatusOrder = async (statusOrder) => {
   }
 };
 
+const validateListPkg = async (list) => {
+  try {
+    await Promise.all(
+      list.map(async (pkg) => {
+        await validatePackageId(pkg);
+        await validateQuantity(pkg);
+      }),
+    );
+    req.packageInfo = arrayPkg;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 module.exports = {
   validatePackageId,
   validateQuantity,
   validateOrderId,
   validationStatusOrder,
   validateInProgres,
+  validateListPkg,
 };

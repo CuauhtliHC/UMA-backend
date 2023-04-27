@@ -10,6 +10,7 @@ const {
   canceladoOrder,
 } = require('../services/ordersRequests');
 const searchStatusUser = require('../services/statusUsersRequests');
+const { userByIdService } = require('../services/usersServices');
 
 const getOrders = async (req = request, res = response) => {
   const { statusOrder, idPackage } = req.query;
@@ -31,11 +32,12 @@ const getOrdersId = async (req = request, res = response) => {
 const postOrders = async (req = request, res = response) => {
   const { user } = res;
   const { quantity } = req.body;
+  const findUser = await userByIdService(user.id);
   const statusOrder = await searchStatus(status.pending);
   const statusUserInProgress = await searchStatusUser(statusUser.inProgress);
-  await user.setStatusUsers(statusUserInProgress);
+  await findUser.setStatusUsers(statusUserInProgress);
 
-  await postOrder({ quantity }, statusOrder, req.packageInfo, user, res);
+  // await postOrder({ quantity }, statusOrder, req.packageInfo, findUser, res);
 };
 
 const deletedOrders = async (req = request, res = response) => {

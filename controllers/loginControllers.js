@@ -37,7 +37,6 @@ exports.loginControllers = (req, res) => {
             date: date || null,
           };
         }
-        console.log(payload);
         const token = generateToken(payload);
         res.cookie('token', token);
 
