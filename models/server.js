@@ -11,6 +11,7 @@ class Server {
     this.usersPath = '/api/users';
     this.loginPath = '/api/login';
     this.ordersPath = '/api/orders';
+    this.ordersAndPackagesPath = '/api/ordersAndPackages';
     this.logoutPath = '/api/logout';
     this.swornStatementPath = '/api/swornStatement';
     this.conectarDB(); // conecta a la base de datos
@@ -46,6 +47,10 @@ class Server {
     this.app.use(this.usersPath, require('../routes/users'));
     this.app.use(this.loginPath, require('../routes/login'));
     this.app.use(this.ordersPath, require('../routes/orders'));
+    this.app.use(
+      this.ordersAndPackagesPath,
+      require('../routes/packageAndOrders'),
+    );
     this.app.use(this.logoutPath, require('../routes/logout'));
     this.app.use(this.swornStatementPath, require('../routes/swornStatement'));
   }

@@ -46,7 +46,6 @@ beforeEach(async () => {
     await Order.create(initOrder);
   });
   newPackageToday = await Package.create(newPackage);
-  console.log('ACAAA', newPackageToday);
   const userAdmin = {
     email: 'admin@admin.com',
     password: 'adminUma.',
@@ -93,7 +92,6 @@ describe('orders - POST', () => {
       .post(`${ordersPath}/create/`)
       .send(newOrder)
       .set('Cookie', cookieAdmin.headers['set-cookie']);
-    console.log(prueb.body);
     const orders = await Order.findAll();
     const ordersJSON = orders.map((orderData) => orderData.toJSON());
     expect(ordersJSON).toHaveLength(initOrders.length + 1);
@@ -117,15 +115,6 @@ describe('Order - Delete', () => {
       .set('Cookie', cookieUser.headers['set-cookie'])
       .expect(401);
   });
-  // test('Borra la order', async () => {
-  //   const id = 1;
-  //   const order = await Order.findByPk(id);
-  //   const deleteando = await api
-  //     .delete(`${ordersPath}/delete/${id}`)
-  //     .set('Cookie', cookieAdmin.headers['set-cookie']);
-  //   console.log(order);
-  //   expect(deleteando.body.deleted).toBe(true);
-  // });
 });
 
 afterAll(async () => {
