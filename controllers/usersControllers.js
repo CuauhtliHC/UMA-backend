@@ -115,7 +115,6 @@ const changeStatus = async (req, res) => {
   const user = await userByIdService(userLogin.id);
   const status = path.slice(1);
   const userStatus = await searchStatusUser(status);
-  console.log(userStatus);
   await user.setStatusUsers(userStatus);
   const userUpdate = await userByIdService(userLogin.id);
 
@@ -123,13 +122,6 @@ const changeStatus = async (req, res) => {
     msg: `Cambio de estado del usuario a ${status}`,
     userUpdate,
   });
-  // disableUserService(id)
-  //   .then(() => res.status(201).json({ msg: 'User Updated' }))
-  //   .catch((error) => {
-  //     res
-  //       .status(500)
-  //       .json({ msg: 'Error - Update User In Status Banned', error });
-  //   });
 };
 
 const forgotPassword = (req, res) => {
