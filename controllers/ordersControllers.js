@@ -31,13 +31,14 @@ const getOrdersId = async (req = request, res = response) => {
 };
 const postOrders = async (req = request, res = response) => {
   const { user } = res;
-  const { quantity } = req.body;
+  const { list } = req.body;
   const findUser = await userByIdService(user.id);
   const statusOrder = await searchStatus(status.pending);
   const statusUserInProgress = await searchStatusUser(statusUser.inProgress);
   await findUser.setStatusUsers(statusUserInProgress);
-
-  // await postOrder({ quantity }, statusOrder, req.packageInfo, findUser, res);
+  await Promise.all(list.map(async (pkg, i) => {
+    await postOrder({ quantity: pkg.quantity }, statusOrder, req.packageInfo[i], findUser, res);
+  }));
 };
 
 const deletedOrders = async (req = request, res = response) => {
