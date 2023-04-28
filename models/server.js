@@ -1,7 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+require('dotenv').config();
 const { dbConection } = require('../database/conectBD');
+
+const {
+  URL_FRONT,
+} = process.env;
 
 class Server {
   constructor() {
@@ -29,7 +34,7 @@ class Server {
     // cors
     this.app.use(
       cors({
-        origin: 'http://localhost:3000',
+        origin: URL_FRONT,
         credentials: true,
       }),
     ); // da acceso a todos los dominios
