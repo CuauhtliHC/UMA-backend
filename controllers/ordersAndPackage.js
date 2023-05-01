@@ -1,14 +1,33 @@
 const { request, response } = require('express');
-const { Package, Order } = require('../models');
+const { Sequelize } = require('sequelize');
+const dayjs = require('dayjs');
+const { Package, Order, InProgressOrders } = require('../models');
 
 const getOrdersAndPackages = async (req = request, res = response) => {
+  const { day } = req.params;
+  const dateStart = dayjs(day).startOf('day').toDate();
+  const dateEnd = dayjs(day).endOf('day').toDate();
   const [packages, orders] = await Promise.all([
     Package.findAll({
       order: ['id'],
+      where: {
+        dateOfDelivery: { [Sequelize.Op.between]: [dateStart, dateEnd] },
+      },
     }),
     Order.findAll({
       order: ['id'],
-      include: { all: true },
+      include: [
+        { model: Package, as: 'Package' },
+        {
+          model: InProgressOrders,
+          as: 'InProgressOrder',
+        },
+      ],
+      where: {
+        createdAt: {
+          [Sequelize.Op.between]: [dateStart, dateEnd],
+        },
+      },
     }),
   ]);
   const allPackage = packages.filter(
