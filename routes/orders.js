@@ -21,7 +21,7 @@ const router = Router();
 
 router.get('/', validationGet, getOrders);
 router.get('/deleted', validationGet, getOrders);
-router.get('/:id', validationsId, getOrdersId);
+router.get('/byId/:id', validationsId, getOrdersId);
 router.post('/create/', validationPost, postOrders);
 router.put(
   '/status/:statusOrder/:id',

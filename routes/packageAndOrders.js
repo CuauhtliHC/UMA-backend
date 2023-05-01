@@ -4,6 +4,6 @@ const getOrdersAndPackages = require('../controllers/ordersAndPackage');
 
 const route = Router();
 
-route.get('/all', getOrdersAndPackages);
+route.get('/all/:day', getOrdersAndPackages);
 
 module.exports = route;
