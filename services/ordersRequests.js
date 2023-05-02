@@ -1,6 +1,8 @@
 const { Sequelize } = require('sequelize');
 const { status } = require('../config/statusOrders.json');
-const { Order, InProgressOrders, Package } = require('../models');
+const {
+  Order, InProgressOrders, Package, User,
+} = require('../models');
 const searchStatus = require('./InProgressOrdersRequests');
 const { putPackagesFromDb } = require('./packageRequests');
 
@@ -145,6 +147,42 @@ const getOrdersRequest = async (query, res, deleted = false) => {
   }
 };
 
+const getOrdersByUserRequest = async (res, idUser, query) => {
+  try {
+    const info = await Order.findAll({
+      where: { deleted: false },
+      include: [
+        {
+          model: InProgressOrders,
+          as: 'InProgressOrder',
+          attributes: ['status'],
+          where: query.status,
+        },
+        {
+          model: Package,
+          as: 'Package',
+        },
+        {
+          model: User,
+          as: 'User',
+          where: { id: idUser },
+        },
+      ],
+    });
+    res.status(200).json({
+      msg: 'Get Orders',
+      total: info.length,
+      info,
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: 'Error Get Order',
+      location: 'services/ordersRequests.js/getOrdersRequest()',
+      error,
+    });
+  }
+};
+
 const getOrdersByDay = async (dateInicio, dateFin, deleted = false) => {
   try {
     const info = await Order.findAll({
@@ -210,4 +248,5 @@ module.exports = {
   postOrder,
   deleteOrderRequest,
   canceladoOrder,
+  getOrdersByUserRequest,
 };

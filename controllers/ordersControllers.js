@@ -8,6 +8,7 @@ const {
   deleteOrderRequest,
   getOrderIdRequest,
   canceladoOrder,
+  getOrdersByUserRequest,
 } = require('../services/ordersRequests');
 const searchStatusUser = require('../services/statusUsersRequests');
 const { userByIdService } = require('../services/usersServices');
@@ -23,6 +24,14 @@ const getOrders = async (req = request, res = response) => {
   } else {
     await getOrdersRequest(query, res, true);
   }
+};
+
+const getOrdersByUser = async (req = request, res = response) => {
+  const { statusOrder } = req.query;
+  const { idUser } = req.params;
+  const query = {};
+  if (statusOrder) query.status = { status: statusOrder.toUpperCase() };
+  await getOrdersByUserRequest(res, idUser, query);
 };
 
 const getOrdersId = async (req = request, res = response) => {
@@ -63,4 +72,5 @@ module.exports = {
   postOrders,
   deletedOrders,
   statusOrderChange,
+  getOrdersByUser,
 };

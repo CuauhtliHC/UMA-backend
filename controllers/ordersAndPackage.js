@@ -12,6 +12,7 @@ const getOrdersAndPackages = async (req = request, res = response) => {
       order: ['id'],
       where: {
         dateOfDelivery: { [Sequelize.Op.between]: [dateStart, dateEnd] },
+        deleted: false,
       },
     }),
     Order.findAll({

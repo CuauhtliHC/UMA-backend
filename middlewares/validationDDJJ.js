@@ -4,7 +4,6 @@ const { userByIdService } = require('../services/usersServices');
 const validateDDJJ = async (req, res, next) => {
   const userRes = res.user;
   const dataValues = await userByIdService(userRes.id);
-  console.log(dataValues);
   res.user = dataValues;
   const { user } = res;
 
