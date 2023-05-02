@@ -56,20 +56,9 @@ const getAllUsers = (req, res) => {
 const getUserById = (req, res) => {
   const { id } = req.params;
   userByIdService(id)
-    .then(({
-      Logs, Orders, Role, active, deleted, email, name, roleId,
-    }) => {
-      res.status(200).json({
-        id,
-        Logs,
-        Orders,
-        Role,
-        active,
-        deleted,
-        email,
-        name,
-        roleId,
-      });
+    .then((user) => {
+      delete user.RecoveryToken;
+      res.status(200).json(user);
     })
     .catch((error) => {
       res.status(500).json({ msg: 'Error - Get User By Id', error });

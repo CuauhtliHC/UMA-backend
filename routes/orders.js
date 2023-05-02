@@ -5,6 +5,7 @@ const {
   postOrders,
   deletedOrders,
   statusOrderChange,
+  getOrdersByUser,
 } = require('../controllers/ordersControllers');
 
 const {
@@ -20,6 +21,7 @@ const {
 const router = Router();
 
 router.get('/', validationGet, getOrders);
+router.get('/byUser/:idUser', getOrdersByUser);
 router.get('/deleted', validationGet, getOrders);
 router.get('/byId/:id', validationsId, getOrdersId);
 router.post('/create/', validationPost, postOrders);

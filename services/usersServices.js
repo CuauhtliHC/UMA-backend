@@ -5,6 +5,8 @@ const { Role } = require('../models');
 const RecoveryToken = require('../models/recoveryToken');
 const StatusUsers = require('../models/statusUser');
 const { statusUser } = require('../config/statusUsers.json');
+const SwornStatement = require('../models/swornStatement');
+const { Order } = require('../models');
 
 const userRegisterService = async (name, email, password) => {
   const role = await Role.findOne({ where: { rol: 'USER_ROL' } });
@@ -58,11 +60,23 @@ const userByIdService = async (id) => {
   try {
     const user = await User.findOne({
       where: { id },
-      attributes: ['id', 'name', 'email', 'active', 'deleted', 'roleId'],
+      attributes: { exclude: ['password'] },
       include: [
         {
-          all: true,
-          nested: true,
+          model: Role,
+          as: 'Role',
+        },
+        {
+          model: StatusUsers,
+          as: 'StatusUsers',
+        },
+        {
+          model: SwornStatement,
+          as: 'SwornStatements',
+        },
+        {
+          model: Order,
+          as: 'Orders',
         },
       ],
     });
