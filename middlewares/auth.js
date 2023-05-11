@@ -4,7 +4,7 @@ const { userByIdService } = require('../services/usersServices');
 // validate auth
 
 function validateAuth(req, res, next) {
-  const { token } = req.cookies;
+  const { token } = req.headers;
   if (!token) return res.sendStatus(401);
 
   const { user } = validateToken(token);
@@ -17,9 +17,8 @@ function validateAuth(req, res, next) {
 // validate ADMIN_ROL
 
 function validateAdmin(req, res, next) {
-  const { token } = req.cookies;
+  const { token } = req.headers;
   if (!token) return res.sendStatus(401);
-
   const { user } = validateToken(token);
   if (!user) return res.sendStatus(401);
   if (user.rol !== 'ADMIN_ROL') return res.sendStatus(401);
@@ -30,7 +29,7 @@ function validateAdmin(req, res, next) {
 // validate USER_ROL
 
 function validateUser(req, res, next) {
-  const { token } = req.cookies;
+  const { token } = req.headers;
   if (!token) return res.sendStatus(401);
 
   const { user } = validateToken(token);

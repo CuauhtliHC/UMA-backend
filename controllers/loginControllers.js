@@ -38,11 +38,11 @@ exports.loginControllers = (req, res) => {
           };
         }
         const token = generateToken(payload);
-        res.cookie('token', token);
 
         res.status(200).json({
           msg: 'Login - User',
           payload,
+          token,
         });
       }
     })

@@ -4,10 +4,6 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const { dbConection } = require('../database/conectBD');
 
-const {
-  URL_FRONT,
-} = process.env;
-
 class Server {
   constructor() {
     this.app = express();
@@ -33,10 +29,7 @@ class Server {
   middLewares() {
     // cors
     this.app.use(
-      cors({
-        origin: URL_FRONT,
-        credentials: true,
-      }),
+      cors(),
     ); // da acceso a todos los dominios
 
     // directorio publico
