@@ -45,9 +45,17 @@ const postOrders = async (req = request, res = response) => {
   const statusOrder = await searchStatus(status.pending);
   const statusUserInProgress = await searchStatusUser(statusUser.inProgress);
   await findUser.setStatusUsers(statusUserInProgress);
-  await Promise.all(list.map(async (pkg, i) => {
-    await postOrder({ quantity: pkg.quantity }, statusOrder, req.packageInfo[i], findUser, res);
-  }));
+  await Promise.all(
+    list.map(async (pkg, i) => {
+      await postOrder(
+        { quantity: pkg.quantity },
+        statusOrder,
+        req.packageInfo[i],
+        findUser,
+        res,
+      );
+    }),
+  );
 };
 
 const deletedOrders = async (req = request, res = response) => {

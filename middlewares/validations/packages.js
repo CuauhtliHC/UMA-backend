@@ -9,7 +9,6 @@ const {
 
 const validationsPostPakage = [
   validateAuth,
-  validateAdmin,
   check('address', 'Address field required').not().isEmpty(),
   check('addresses', 'addresses field required').not().isEmpty(),
   check('weight', 'weight field required').not().isEmpty(),
