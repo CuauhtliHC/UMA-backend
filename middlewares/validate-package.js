@@ -20,9 +20,9 @@ const validatedDeliveryDate = (dateOfDelivery) => {
     throw new Error('The date is not valid');
   }
 
-  if (!fecha.isAfter(hoy, 'day')) {
-    throw new Error('The date must be after the current day');
-  }
+  // if (!fecha.isAfter(hoy, 'day')) {
+  //   throw new Error('The date must be after the current day');
+  // }
 
   return true;
 };

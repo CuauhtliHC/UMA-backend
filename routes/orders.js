@@ -30,6 +30,6 @@ router.put(
   validationChangeStatus,
   statusOrderChange,
 );
-router.delete('/delete/:id', validationDeleted, deletedOrders);
+router.delete('/delete/:id', validationDeleted, deletedOrders); // usar para el tachito
 
 module.exports = router;
