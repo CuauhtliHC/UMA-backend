@@ -9,6 +9,7 @@ const {
   forgotPasswordService,
   resetPasswordService,
   totalUserAFService,
+  deleteMyUserService,
 } = require('../services/usersServices');
 const { sendEmailRestorePassword } = require('../utils/sendEmail');
 
@@ -98,6 +99,20 @@ const disableUser = (req, res) => {
         .json({ msg: 'Error - Update User In Status Banned', error });
     });
 };
+const deleteMyUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await deleteMyUserService(id);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    res.json({ message: 'Usuario deshabilitado correctamente' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al deshabilitar el usuario' });
+  }
+};
+
 const changeStatus = async (req, res) => {
   const { path } = req;
   const userLogin = res.user;
@@ -162,4 +177,5 @@ module.exports = {
   resetPassword,
   changeStatus,
   getTotalUserAF,
+  deleteMyUser,
 };

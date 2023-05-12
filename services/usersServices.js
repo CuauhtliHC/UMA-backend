@@ -119,6 +119,14 @@ const disableUserService = async (id) => {
   return user;
 };
 
+const deleteMyUserService = async (id) => {
+  const user = await User.findOne({ where: { id } });
+  if (!user) {
+    return null;
+  }
+  await user.destroy();
+  return user;
+};
 const forgotPasswordService = async (email) => {
   const user = await User.findOne({ where: { email } });
   const token = jwt.sign({ email }, process.env.JWT_SECRET, {
@@ -163,4 +171,5 @@ module.exports = {
   forgotPasswordService,
   resetPasswordService,
   totalUserAFService,
+  deleteMyUserService,
 };
